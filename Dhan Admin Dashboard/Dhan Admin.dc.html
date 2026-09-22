@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap;}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap;}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-SemiBold.ttf") format("truetype");font-weight:600;font-style:normal;font-display:swap;}
+@font-face{font-family:"Poppins";src:url("fonts/Poppins-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap;}
+html,body{margin:0;padding:0;font-family:"Poppins",system-ui,sans-serif;background:#F5F6FA;color:#141C41;-webkit-font-smoothing:antialiased;}
+*{box-sizing:border-box;}
+a{color:#141C41;text-decoration:underline;}
+a:hover{color:#C9A84C;}
+input,textarea,select,button{font-family:"Poppins",system-ui,sans-serif;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#141C41;}
+::placeholder{color:#9AA0B8;}
+@keyframes dhanFade{from{opacity:0;}to{opacity:1;}}
+@keyframes dhanSlide{from{transform:translateX(24px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+</helmet>
+
+<div style="display:flex;min-height:100vh;width:100%;font-size:16px;line-height:1.45;letter-spacing:0;">
+
+  <!-- Sidebar -->
+  <div style="width:236px;flex:0 0 236px;background:#141C41;display:flex;flex-direction:column;padding:20px 12px;gap:28px;position:sticky;top:0;height:100vh;">
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:0 8px;">
+      <div style="background:#FFFFFF;border-radius:8px;width:44px;height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;">
+        <img src="assets/dhan-logomark.svg" alt="Dhan" style="height:26px;width:auto;display:block;" />
+      </div>
+      <span style="color:rgba(255,255,255,0.5);font-size:13px;letter-spacing:0.06em;text-transform:uppercase;">Admin console</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <div onClick="{{ goOverview }}" onMouseEnter="{{ hoverOverview }}" onMouseLeave="{{ hoverNone }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:16px;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);background:{{ navBg.overview }};color:{{ navFg.overview }};font-weight:{{ navFw.overview }};">
+        <i class="{{ navIcon.overview }} ph-squares-four" style="font-size:19px;"></i>Overview
+      </div>
+      <div onClick="{{ goCustomers }}" onMouseEnter="{{ hoverCustomers }}" onMouseLeave="{{ hoverNone }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:16px;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);background:{{ navBg.customers }};color:{{ navFg.customers }};font-weight:{{ navFw.customers }};">
+        <i class="{{ navIcon.customers }} ph-users-three" style="font-size:19px;"></i>Customers
+      </div>
+      <div onClick="{{ goKyc }}" onMouseEnter="{{ hoverKyc }}" onMouseLeave="{{ hoverNone }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:16px;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);background:{{ navBg.kyc }};color:{{ navFg.kyc }};font-weight:{{ navFw.kyc }};">
+        <i class="{{ navIcon.kyc }} ph-identification-card" style="font-size:19px;"></i><span style="white-space:nowrap;">KYC</span>
+        <div style="flex:1;"></div>
+        <span style="display:flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 7px;border-radius:999px;background:#C9A84C;color:#141C41;font-size:12px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums lining-nums;">{{ kycOpenCount }}</span>
+      </div>
+      <div onClick="{{ goRisk }}" onMouseEnter="{{ hoverRisk }}" onMouseLeave="{{ hoverNone }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:16px;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);background:{{ navBg.risk }};color:{{ navFg.risk }};font-weight:{{ navFw.risk }};">
+        <i class="{{ navIcon.risk }} ph-shield-warning" style="font-size:19px;"></i><span style="white-space:nowrap;">Risk &amp; security</span>
+      </div>
+      <div onClick="{{ goOffers }}" onMouseEnter="{{ hoverOffers }}" onMouseLeave="{{ hoverNone }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:16px;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);background:{{ navBg.offers }};color:{{ navFg.offers }};font-weight:{{ navFw.offers }};">
+        <i class="{{ navIcon.offers }} ph-megaphone" style="font-size:19px;"></i>Offers
+      </div>
+      <div onClick="{{ goAdmins }}" onMouseEnter="{{ hoverAdmins }}" onMouseLeave="{{ hoverNone }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:16px;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);background:{{ navBg.admins }};color:{{ navFg.admins }};font-weight:{{ navFw.admins }};">
+        <i class="{{ navIcon.admins }} ph-shield-check" style="font-size:19px;"></i>Admins
+      </div>
+      <div onClick="{{ goSettings }}" onMouseEnter="{{ hoverSettings }}" onMouseLeave="{{ hoverNone }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border-radius:8px;cursor:pointer;font-size:16px;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);background:{{ navBg.settings }};color:{{ navFg.settings }};font-weight:{{ navFw.settings }};">
+        <i class="{{ navIcon.settings }} ph-gear-six" style="font-size:19px;"></i>Settings
+      </div>
+    </div>
+
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px;padding:14px 12px;border-radius:8px;background:rgba(255,255,255,0.05);">
+      <div style="display:flex;align-items:center;gap:6px;color:#C9A84C;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;">
+        <i class="ph ph-lock-simple" style="font-size:13px;"></i>Local-first
+      </div>
+      <div style="color:rgba(255,255,255,0.62);font-size:14px;line-height:1.5;">Account metadata only. Transactions and budgets stay on the user's device.</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+    <!-- Topbar -->
+    <div style="height:68px;flex:0 0 68px;border-bottom:1px solid #E1E3EC;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;padding:0 24px;gap:24px;position:sticky;top:0;z-index:5;">
+      <div style="display:flex;flex-direction:column;gap:1px;min-width:0;">
+        <div style="font-size:24px;font-weight:500;color:#141C41;letter-spacing:-0.01em;">{{ pageTitle }}</div>
+        <div style="font-size:15px;color:#6B7192;">{{ pageSub }}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;position:relative;">
+        <div style="display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid #E1E3EC;border-radius:8px;width:260px;background:#FFFFFF;">
+          <i class="ph ph-magnifying-glass" style="font-size:16px;color:#9AA0B8;"></i>
+          <input value="{{ q }}" onChange="{{ onSearch }}" placeholder="Search customers by name, email…" style="border:none;background:transparent;font-size:15px;color:#141C41;width:100%;padding:0;" />
+          <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}">
+            <i onClick="{{ clearSearch }}" class="ph ph-x-circle" style="font-size:16px;color:#9AA0B8;cursor:pointer;"></i>
+          </sc-if>
+        </div>
+        <div onClick="{{ toggleBell }}" style="width:36px;height:36px;border:1px solid #E1E3EC;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;" style-hover="background:#F5F6FA;">
+          <i class="ph ph-bell" style="font-size:17px;color:#141C41;"></i>
+          <span style="position:absolute;top:7px;right:8px;width:6px;height:6px;border-radius:999px;background:#C94A3B;opacity:{{ bellDot }};"></span>
+        </div>
+        <div onClick="{{ toggleProfile }}" style="display:flex;align-items:center;gap:8px;padding-left:12px;border-left:1px solid #E1E3EC;cursor:pointer;">
+          <div style="width:30px;height:30px;border-radius:999px;background:#141C41;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;">{{ meInitials }}</div>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-size:15px;font-weight:500;color:#141C41;">{{ meName }}</span>
+            <span style="font-size:13px;color:#6B7192;">Super admin</span>
+          </div>
+        </div>
+
+        <sc-if value="{{ bellOpen }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div onClick="{{ closeMenus }}" style="position:fixed;inset:0;z-index:8;"></div>
+            <div style="position:absolute;top:52px;right:172px;width:380px;background:#FFFFFF;border:1px solid #E1E3EC;border-radius:12px;z-index:9;overflow:hidden;">
+              <div style="padding:14px 16px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:16px;font-weight:600;">Notifications</span>
+                <span style="font-size:14px;color:#6B7192;">Last 48 hours</span>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                <div style="width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:#F8ECEA;display:flex;align-items:center;justify-content:center;"><i class="ph ph-lifebuoy" style="font-size:14px;color:#C94A3B;"></i></div>
+                <div style="flex:1;">Imran Shaikh raised a support item — backup restore<div style="font-size:14px;color:#6B7192;">2 days open</div></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                <div style="width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:#FAF3E0;display:flex;align-items:center;justify-content:center;"><i class="ph ph-arrow-circle-up" style="font-size:14px;color:#C9A84C;"></i></div>
+                <div style="flex:1;">Rohan Mehta upgraded to Plus<div style="font-size:14px;color:#6B7192;">2 hours ago</div></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                <div style="width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:#EAF3EE;display:flex;align-items:center;justify-content:center;"><i class="ph ph-user-plus" style="font-size:14px;color:#2E7D5B;"></i></div>
+                <div style="flex:1;">Ananya Sharma signed up on iOS<div style="font-size:14px;color:#6B7192;">18 min ago</div></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:15px;">
+                <span onClick="{{ goNotifs }}" style="color:#141C41;font-weight:500;cursor:pointer;text-decoration:underline;">View all notifications</span>
+                <span onClick="{{ cardSupport }}" style="color:#6B7192;cursor:pointer;text-decoration:underline;">Pending support</span>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ profileOpen }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div onClick="{{ closeMenus }}" style="position:fixed;inset:0;z-index:8;"></div>
+            <div style="position:absolute;top:52px;right:0;width:220px;background:#FFFFFF;border:1px solid #E1E3EC;border-radius:12px;z-index:9;overflow:hidden;">
+              <div style="padding:12px 14px;border-bottom:1px solid #EEF0F5;">
+                <div style="font-size:15px;font-weight:500;">{{ meName }}</div>
+                <div style="font-size:14px;color:#6B7192;">priya@dhan.app</div>
+              </div>
+              <div onClick="{{ menuAccount }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 14px;font-size:15px;cursor:pointer;" style-hover="background:#F5F6FA;">
+                <i class="ph ph-user-gear" style="font-size:16px;"></i>Account settings
+              </div>
+              <div onClick="{{ menuSwitch }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 14px;font-size:15px;cursor:pointer;" style-hover="background:#F5F6FA;">
+                <i class="ph ph-arrows-left-right" style="font-size:16px;"></i>Switch admin
+              </div>
+              <div onClick="{{ menuLogout }}" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 14px;font-size:15px;color:#C94A3B;cursor:pointer;border-top:1px solid #EEF0F5;" style-hover="background:#FDF4F3;">
+                <i class="ph ph-sign-out" style="font-size:16px;"></i>Log out
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;">
+
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+          <div onClick="{{ cardTotal }}" style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:18px;cursor:pointer;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1),border-color 120ms cubic-bezier(0.22,0.61,0.36,1);" style-hover="background:#F9FAFC;border-color:#C3C7D9;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Total users</span>
+              <i class="ph ph-users" style="font-size:17px;color:#9AA0B8;"></i>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:32px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums lining-nums;">104</span>
+              <span style="font-size:14px;color:#2E7D5B;font-weight:500;">+6 this week</span>
+            </div>
+          </div>
+          <div onClick="{{ cardPlus }}" style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:18px;cursor:pointer;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1),border-color 120ms cubic-bezier(0.22,0.61,0.36,1);" style-hover="background:#F9FAFC;border-color:#C3C7D9;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Plus subscribers</span>
+              <i class="ph ph-seal-check" style="font-size:17px;color:#C9A84C;"></i>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:32px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums lining-nums;">23</span>
+              <span style="font-size:14px;color:#6B7192;font-weight:500;">₹4,577 MRR</span>
+            </div>
+          </div>
+          <div onClick="{{ cardChurn }}" style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:18px;cursor:pointer;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1),border-color 120ms cubic-bezier(0.22,0.61,0.36,1);" style-hover="background:#F9FAFC;border-color:#C3C7D9;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Churn rate</span>
+              <i class="ph ph-trend-down" style="font-size:17px;color:#9AA0B8;"></i>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:32px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums lining-nums;">4.3%</span>
+              <span style="font-size:14px;color:#C94A3B;font-weight:500;">1 cancellation</span>
+            </div>
+          </div>
+          <div onClick="{{ cardNew }}" style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:18px;cursor:pointer;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1),border-color 120ms cubic-bezier(0.22,0.61,0.36,1);" style-hover="background:#F9FAFC;border-color:#C3C7D9;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">New signups</span>
+              <i class="ph ph-user-plus" style="font-size:17px;color:#9AA0B8;"></i>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:32px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums lining-nums;">2</span>
+              <span style="font-size:14px;color:#6B7192;font-weight:500;">today · 6 this week</span>
+            </div>
+          </div>
+          <div onClick="{{ cardSupport }}" style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:18px;cursor:pointer;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1),border-color 120ms cubic-bezier(0.22,0.61,0.36,1);" style-hover="background:#F9FAFC;border-color:#C3C7D9;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Pending support</span>
+              <i class="ph ph-lifebuoy" style="font-size:17px;color:#D89838;"></i>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:32px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums lining-nums;">3</span>
+              <span style="font-size:14px;color:#D89838;font-weight:500;">oldest 2 days</span>
+            </div>
+          </div>
+          <div onClick="{{ cardDeactivated }}" style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:18px;cursor:pointer;transition:background 120ms cubic-bezier(0.22,0.61,0.36,1),border-color 120ms cubic-bezier(0.22,0.61,0.36,1);" style-hover="background:#F9FAFC;border-color:#C3C7D9;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Deactivated accounts</span>
+              <i class="ph ph-prohibit" style="font-size:17px;color:#9AA0B8;"></i>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font-size:32px;font-weight:700;letter-spacing:-0.02em;font-variant-numeric:tabular-nums lining-nums;">{{ deactivatedCount }}</span>
+              <span style="font-size:14px;color:#6B7192;font-weight:500;">{{ deactivatedNote }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start;">
+
+          <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;">
+            <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:17px;font-weight:600;">Recent activity</span>
+              <span style="font-size:14px;color:#6B7192;">Last 48 hours</span>
+            </div>
+            <div style="display:flex;flex-direction:column;">
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;">
+                <div style="width:30px;height:30px;border-radius:8px;background:#EAF3EE;display:flex;align-items:center;justify-content:center;"><i class="ph ph-user-plus" style="font-size:15px;color:#2E7D5B;"></i></div>
+                <div style="flex:1;min-width:0;"><span style="font-weight:500;">Ananya Sharma</span> signed up on iOS</div>
+                <span style="font-size:14px;color:#9AA0B8;white-space:nowrap;">18 min ago</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;">
+                <div style="width:30px;height:30px;border-radius:8px;background:#FAF3E0;display:flex;align-items:center;justify-content:center;"><i class="ph ph-arrow-circle-up" style="font-size:15px;color:#C9A84C;"></i></div>
+                <div style="flex:1;min-width:0;"><span style="font-weight:500;">Rohan Mehta</span> upgraded to Plus — ₹199/mo</div>
+                <span style="font-size:14px;color:#9AA0B8;white-space:nowrap;">2 hours ago</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;">
+                <div style="width:30px;height:30px;border-radius:8px;background:#F8ECEA;display:flex;align-items:center;justify-content:center;"><i class="ph ph-x-circle" style="font-size:15px;color:#C94A3B;"></i></div>
+                <div style="flex:1;min-width:0;"><span style="font-weight:500;">Neha Iyer</span> cancelled Plus — reason: "not using it"</div>
+                <span style="font-size:14px;color:#9AA0B8;white-space:nowrap;">5 hours ago</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;">
+                <div style="width:30px;height:30px;border-radius:8px;background:#EDEFF6;display:flex;align-items:center;justify-content:center;"><i class="ph ph-shield-check" style="font-size:15px;color:#141C41;"></i></div>
+                <div style="flex:1;min-width:0;"><span style="font-weight:500;">Kabir (support)</span> granted Plus manually to Meera Nair</div>
+                <span style="font-size:14px;color:#9AA0B8;white-space:nowrap;">Yesterday</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;">
+                <div style="width:30px;height:30px;border-radius:8px;background:#EAF3EE;display:flex;align-items:center;justify-content:center;"><i class="ph ph-user-plus" style="font-size:15px;color:#2E7D5B;"></i></div>
+                <div style="flex:1;min-width:0;"><span style="font-weight:500;">Vikram Rao</span> signed up on Android</div>
+                <span style="font-size:14px;color:#9AA0B8;white-space:nowrap;">Yesterday</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Shortcuts</span>
+              <div onClick="{{ goCustomers }}" style="display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;border:1px solid #E1E3EC;border-radius:8px;cursor:pointer;" style-hover="background:#F5F6FA;">
+                <i class="ph ph-users-three" style="font-size:18px;color:#141C41;"></i>
+                <span style="flex:1;font-size:15px;font-weight:500;">Manage customers</span>
+                <i class="ph ph-arrow-right" style="font-size:15px;color:#9AA0B8;"></i>
+              </div>
+              <div onClick="{{ goOffers }}" style="display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;border:1px solid #E1E3EC;border-radius:8px;cursor:pointer;" style-hover="background:#F5F6FA;">
+                <i class="ph ph-megaphone" style="font-size:18px;color:#141C41;"></i>
+                <span style="flex:1;font-size:15px;font-weight:500;">New announcement</span>
+                <i class="ph ph-arrow-right" style="font-size:15px;color:#9AA0B8;"></i>
+              </div>
+              <div onClick="{{ goAdmins }}" style="display:flex;align-items:center;gap:12px;height:48px;padding:0 14px;border:1px solid #E1E3EC;border-radius:8px;cursor:pointer;" style-hover="background:#F5F6FA;">
+                <i class="ph ph-shield-check" style="font-size:18px;color:#141C41;"></i>
+                <span style="flex:1;font-size:15px;font-weight:500;">Admin access</span>
+                <i class="ph ph-arrow-right" style="font-size:15px;color:#9AA0B8;"></i>
+              </div>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;">
+              <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Plan mix</span>
+              <div style="display:flex;height:10px;border-radius:999px;overflow:hidden;background:#EEF0F5;">
+                <div style="width:78%;background:#141C41;"></div>
+                <div style="width:22%;background:#C9A84C;"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:14px;color:#6B7192;">
+                <span><span style="display:inline-block;width:8px;height:8px;border-radius:999px;background:#141C41;margin-right:6px;"></span>Free · 81</span>
+                <span><span style="display:inline-block;width:8px;height:8px;border-radius:999px;background:#C9A84C;margin-right:6px;"></span>Plus · 23</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- CUSTOMERS -->
+    <sc-if value="{{ isCustomers }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;align-items:stretch;gap:12px;flex-wrap:wrap;">
+            <div style="display:flex;gap:4px;padding:4px;background:#FFFFFF;border:1px solid #E1E3EC;border-radius:8px;flex:0 0 auto;">
+              <div onClick="{{ setPlanAll }}" style="padding:12px 16px;border-radius:4px;display:flex;align-items:center;font-size:15px;line-height:1;cursor:pointer;background:{{ planBg.All }};color:{{ planFg.All }};font-weight:{{ planFw.All }};">All plans</div>
+              <div onClick="{{ setPlanFree }}" style="padding:12px 16px;border-radius:4px;display:flex;align-items:center;font-size:15px;line-height:1;cursor:pointer;background:{{ planBg.Free }};color:{{ planFg.Free }};font-weight:{{ planFw.Free }};">Free</div>
+              <div onClick="{{ setPlanPlus }}" style="padding:12px 16px;border-radius:4px;display:flex;align-items:center;font-size:15px;line-height:1;cursor:pointer;background:{{ planBg.Plus }};color:{{ planFg.Plus }};font-weight:{{ planFw.Plus }};">Plus</div>
+            </div>
+            <sc-for list="{{ filterMenus }}" as="m" hint-placeholder-count="4">
+              <div style="position:relative;display:flex;flex:1 1 auto;min-width:170px;">
+                <div onClick="{{ m.toggle }}" style="width:100%;padding:12px 42px 12px 16px;min-height:46px;border:1px solid {{ m.borderColor }};border-radius:8px;background:#FFFFFF;font-size:15px;line-height:1.2;color:#141C41;cursor:pointer;display:flex;align-items:center;">
+                  <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.value }}</span>
+                </div>
+                <i class="{{ m.caretIcon }}" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:15px;color:#6B7192;pointer-events:none;"></i>
+                <sc-if value="{{ m.open }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ closeFilterMenu }}" style="position:fixed;inset:0;z-index:11;"></div>
+                  <div style="position:absolute;top:calc(100% + 6px);left:0;min-width:100%;width:max-content;max-width:280px;background:#FFFFFF;border:1px solid #E1E3EC;border-radius:8px;z-index:12;overflow:hidden;padding:4px;display:flex;flex-direction:column;gap:2px;">
+                    <sc-for list="{{ m.options }}" as="o" hint-placeholder-count="3">
+                      <div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:4px;font-size:15px;cursor:pointer;white-space:nowrap;background:{{ o.bg }};color:{{ o.fg }};font-weight:{{ o.fw }};" style-hover="background:#F5F6FA;">
+                        <i class="ph ph-check" style="font-size:14px;color:#C9A84C;opacity:{{ o.mark }};"></i>{{ o.label }}
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ clearSearch }}" style="display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:999px;background:#141C41;color:#FFFFFF;font-size:15px;line-height:1;cursor:pointer;">
+                <i class="ph ph-magnifying-glass" style="font-size:14px;color:#C9A84C;"></i>{{ queryLabel }}
+                <i class="ph ph-x" style="font-size:13px;"></i>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <div style="font-size:15px;color:#6B7192;">{{ countLabel }}</div>
+            <div onClick="{{ toast_export }}" style="padding:12px 18px;border:1px solid #E1E3EC;border-radius:8px;background:#FFFFFF;display:flex;align-items:center;gap:8px;font-size:15px;line-height:1;font-weight:500;cursor:pointer;" style-hover="background:#F5F6FA;">
+              <i class="ph ph-download-simple" style="font-size:15px;"></i>Export CSV
+            </div>
+          </div>
+        </div>
+
+        <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#141C41;border-radius:8px;color:#FFFFFF;">
+            <i class="ph-fill ph-check-square" style="font-size:17px;color:#C9A84C;"></i>
+            <span style="font-size:15px;font-weight:500;">{{ selLabel }}</span>
+            <div style="flex:1;"></div>
+            <div onClick="{{ bulkOffer }}" style="padding:10px 14px;border-radius:8px;background:#C9A84C;color:#141C41;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer;">
+              <i class="ph ph-paper-plane-tilt" style="font-size:14px;"></i>Send offer message
+            </div>
+            <div onClick="{{ clearSel }}" style="padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.28);display:flex;align-items:center;font-size:15px;cursor:pointer;">Clear</div>
+          </div>
+        </sc-if>
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:40px minmax(0,2.2fr) minmax(0,1.3fr) 1fr 90px 100px 1fr 90px;align-items:center;gap:12px;padding:0 20px;height:48px;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">
+            <div onClick="{{ toggleAll }}" style="width:16px;height:16px;border-radius:4px;border:1px solid #C3C7D9;display:flex;align-items:center;justify-content:center;cursor:pointer;background:{{ allBg }};">
+              <i class="ph-fill ph-check" style="font-size:11px;color:#FFFFFF;opacity:{{ allMark }};"></i>
+            </div>
+            <div>Customer</div>
+            <div>Phone</div>
+            <div>Signed up</div>
+            <div>Plan</div>
+            <div>Status</div>
+            <div>Last active</div>
+            <div>Platform</div>
+          </div>
+          <sc-for list="{{ rows }}" as="row" hint-placeholder-count="8">
+            <div onClick="{{ row.open }}" style="display:grid;grid-template-columns:40px minmax(0,2.2fr) minmax(0,1.3fr) 1fr 90px 100px 1fr 90px;align-items:center;gap:12px;padding:0 20px;height:72px;border-bottom:1px solid #EEF0F5;cursor:pointer;font-size:15px;" style-hover="background:#F9FAFC;">
+              <div onClick="{{ row.toggle }}" style="width:16px;height:16px;border-radius:4px;border:1px solid #C3C7D9;display:flex;align-items:center;justify-content:center;background:{{ row.cbBg }};">
+                <i class="ph-fill ph-check" style="font-size:11px;color:#FFFFFF;opacity:{{ row.cbMark }};"></i>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                <div style="width:32px;height:32px;flex:0 0 32px;border-radius:999px;background:#EDEFF6;color:#141C41;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">{{ row.initials }}</div>
+                <div style="display:flex;flex-direction:column;min-width:0;">
+                  <span style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ row.name }}</span>
+                  <span style="font-size:13px;color:#6B7192;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ row.email }}</span>
+                </div>
+              </div>
+              <div style="color:#6B7192;font-variant-numeric:tabular-nums lining-nums;">{{ row.phone }}</div>
+              <div style="color:#6B7192;font-variant-numeric:tabular-nums lining-nums;">{{ row.signup }}</div>
+              <div>
+                <span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;font-size:14px;font-weight:500;background:{{ row.planBg }};color:{{ row.planFg }};">{{ row.plan }}</span>
+              </div>
+              <div>
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:{{ row.statusFg }};">
+                  <span style="width:6px;height:6px;border-radius:999px;background:{{ row.statusFg }};"></span>{{ row.status }}
+                </span>
+              </div>
+              <div style="color:#6B7192;">{{ row.lastActive }}</div>
+              <div style="display:flex;align-items:center;gap:6px;color:#6B7192;">
+                <i class="{{ row.platIcon }}" style="font-size:15px;"></i>{{ row.platform }}
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ rowsEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:48px 22px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <i class="ph ph-magnifying-glass" style="font-size:28px;color:#9AA0B8;"></i>
+              <span style="font-size:15px;font-weight:500;text-align:center;">{{ emptyTitle }}</span>
+              <span style="font-size:14px;color:#6B7192;text-align:center;max-width:420px;line-height:1.5;">{{ emptyBody }}</span>
+              <div onClick="{{ resetSearch }}" style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid #E1E3EC;border-radius:12px;background:#FFFFFF;font-size:15px;font-weight:500;color:#141C41;cursor:pointer;" style-hover="background:#F5F6FA;">
+                <i class="ph ph-arrow-counter-clockwise" style="font-size:15px;"></i>Clear search and filters
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ hasRows }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 22px;font-size:14px;color:#6B7192;">
+              <span>{{ countLabel }}</span>
+              <div style="display:flex;gap:6px;">
+                <div style="padding:9px 12px;border:1px solid #E1E3EC;border-radius:4px;display:flex;align-items:center;cursor:pointer;">Previous</div>
+                <div style="padding:9px 12px;border:1px solid #E1E3EC;border-radius:4px;display:flex;align-items:center;cursor:pointer;">Next</div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- OFFERS -->
+    <sc-if value="{{ isOffers }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+
+        <div style="display:flex;gap:4px;padding:4px;background:#FFFFFF;border:1px solid #E1E3EC;border-radius:8px;align-self:flex-start;">
+          <div onClick="{{ setTabOffer }}" style="padding:11px 18px;border-radius:4px;display:flex;align-items:center;gap:8px;font-size:15px;cursor:pointer;background:{{ tabBg.offer }};color:{{ tabFg.offer }};font-weight:{{ tabFw.offer }};">
+            <i class="ph ph-tag" style="font-size:15px;"></i>Offer message
+          </div>
+          <div onClick="{{ setTabAnn }}" style="padding:11px 18px;border-radius:4px;display:flex;align-items:center;gap:8px;font-size:15px;cursor:pointer;background:{{ tabBg.ann }};color:{{ tabFg.ann }};font-weight:{{ tabFw.ann }};">
+            <i class="ph ph-monitor-play" style="font-size:15px;"></i>In-app announcement
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start;">
+
+          <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;">
+            <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;font-size:17px;font-weight:600;">{{ composerTitle }}</div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:20px;">
+
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <span style="font-size:14px;font-weight:500;color:#141C41;">Audience</span>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <div onClick="{{ setAudAll }}" style="padding:11px 16px;border-radius:999px;border:1px solid #E1E3EC;display:flex;align-items:center;gap:7px;font-size:15px;cursor:pointer;background:{{ audBg.all }};color:{{ audFg.all }};">
+                    <i class="{{ audIcon.all }} ph-users" style="font-size:14px;"></i>All users · 104
+                  </div>
+                  <div onClick="{{ setAudFree }}" style="padding:11px 16px;border-radius:999px;border:1px solid #E1E3EC;display:flex;align-items:center;gap:7px;font-size:15px;cursor:pointer;background:{{ audBg.free }};color:{{ audFg.free }};">
+                    <i class="{{ audIcon.free }} ph-user" style="font-size:14px;"></i>Free users · 81
+                  </div>
+                  <div onClick="{{ setAudPlus }}" style="padding:11px 16px;border-radius:999px;border:1px solid #E1E3EC;display:flex;align-items:center;gap:7px;font-size:15px;cursor:pointer;background:{{ audBg.plus }};color:{{ audFg.plus }};">
+                    <i class="{{ audIcon.plus }} ph-seal-check" style="font-size:14px;"></i>Plus users · 23
+                  </div>
+                  <div onClick="{{ setAudCustom }}" style="padding:11px 16px;border-radius:999px;border:1px solid #E1E3EC;display:flex;align-items:center;gap:7px;font-size:15px;cursor:pointer;background:{{ audBg.custom }};color:{{ audFg.custom }};">
+                    <i class="{{ audIcon.custom }} ph-funnel" style="font-size:14px;"></i>Custom segment
+                  </div>
+                </div>
+                <sc-if value="{{ isCustomAud }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;gap:8px;padding:12px;border:1px solid #E1E3EC;border-radius:8px;background:#F9FAFC;flex-wrap:wrap;align-items:center;">
+                    <span style="font-size:14px;color:#6B7192;">Match users where</span>
+                    <select style="padding:10px 14px;border:1px solid #E1E3EC;border-radius:4px;background:#FFFFFF;font-size:14px;">
+                      <option>Platform is iOS</option>
+                      <option>Platform is Android</option>
+                      <option>Inactive for 14+ days</option>
+                      <option>Signed up in last 30 days</option>
+                    </select>
+                    <span style="font-size:14px;color:#6B7192;">and plan is</span>
+                    <select style="padding:10px 14px;border:1px solid #E1E3EC;border-radius:4px;background:#FFFFFF;font-size:14px;">
+                      <option>Free</option>
+                      <option>Plus</option>
+                      <option>Any</option>
+                    </select>
+                    <span style="font-size:14px;font-weight:500;color:#141C41;">→ 34 users</span>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <span style="font-size:14px;font-weight:500;color:#141C41;">{{ headlineLabel }}</span>
+                <input value="{{ offerTitle }}" onChange="{{ onOfferTitle }}" placeholder="Two months of Plus, on us" style="padding:12px 16px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;color:#141C41;" />
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <span style="font-size:14px;font-weight:500;color:#141C41;">Message</span>
+                <textarea value="{{ offerBody }}" onChange="{{ onOfferBody }}" rows="4" placeholder="Keep it short and warm — one sentence and a CTA works best." style="padding:12px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;color:#141C41;resize:vertical;line-height:1.5;"></textarea>
+                <span style="font-size:14px;color:#9AA0B8;">{{ charLabel }}</span>
+              </div>
+
+              <sc-if value="{{ isAnnTab }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <span style="font-size:14px;font-weight:500;color:#141C41;">Style</span>
+                  <div style="display:flex;gap:8px;">
+                    <div onClick="{{ setStyleBanner }}" style="padding:11px 16px;border-radius:8px;border:1px solid #E1E3EC;display:flex;align-items:center;gap:7px;font-size:15px;cursor:pointer;background:{{ styBg.banner }};color:{{ styFg.banner }};">Banner</div>
+                    <div onClick="{{ setStyleModal }}" style="padding:11px 16px;border-radius:8px;border:1px solid #E1E3EC;display:flex;align-items:center;gap:7px;font-size:15px;cursor:pointer;background:{{ styBg.modal }};color:{{ styFg.modal }};">Modal</div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <span style="font-size:14px;font-weight:500;color:#141C41;">{{ startLabel }}</span>
+                  <input type="date" value="2026-09-04" style="padding:12px 16px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;color:#141C41;" />
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <span style="font-size:14px;font-weight:500;color:#141C41;">Ends</span>
+                  <input type="date" value="2026-09-18" style="padding:12px 16px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;color:#141C41;" />
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:10px;padding-top:4px;border-top:1px solid #EEF0F5;padding-top:16px;">
+                <div onClick="{{ sendOffer }}" style="padding:12px 18px;border-radius:12px;background:#141C41;color:#FFFFFF;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer;" style-hover="opacity:0.88;">
+                  <i class="ph ph-paper-plane-tilt" style="font-size:15px;"></i>{{ sendLabel }}
+                </div>
+                <div onClick="{{ scheduleOffer }}" style="padding:12px 18px;border-radius:12px;border:1px solid #E1E3EC;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;cursor:pointer;" style-hover="background:#F5F6FA;">
+                  <i class="ph ph-clock" style="font-size:15px;"></i>Schedule
+                </div>
+                <div style="flex:1;"></div>
+                <span style="font-size:14px;color:#6B7192;">Reaches {{ reachLabel }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;">
+            <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:17px;font-weight:600;">Preview</span>
+              <span style="font-size:13px;color:#6B7192;letter-spacing:0.06em;text-transform:uppercase;">{{ previewMode }}</span>
+            </div>
+            <div style="padding:20px;display:flex;justify-content:center;background:#F5F6FA;border-radius:0 0 12px 12px;">
+              <div style="width:264px;border:1px solid #E1E3EC;border-radius:12px;background:#FFFFFF;overflow:hidden;">
+                <div style="height:28px;background:#141C41;display:flex;align-items:center;justify-content:space-between;padding:0 12px;">
+                  <span style="color:rgba(255,255,255,0.85);font-size:12px;font-weight:500;">9:41</span>
+                  <span style="color:rgba(255,255,255,0.85);font-size:12px;">Dhan</span>
+                </div>
+                <div style="padding:14px;display:flex;flex-direction:column;gap:12px;min-height:300px;">
+                  <div style="padding:14px;border-radius:12px;background:#141C41;display:flex;flex-direction:column;gap:6px;">
+                    <div style="display:flex;align-items:center;gap:6px;">
+                      <i class="ph-fill ph-seal-check" style="font-size:13px;color:#C9A84C;"></i>
+                      <span style="color:#C9A84C;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;">{{ previewEyebrow }}</span>
+                    </div>
+                    <div style="color:#FFFFFF;font-size:16px;font-weight:600;line-height:1.35;">{{ previewTitle }}</div>
+                    <div style="color:rgba(255,255,255,0.72);font-size:14px;line-height:1.5;">{{ previewBody }}</div>
+                    <div style="margin-top:6px;height:34px;border-radius:8px;background:#C9A84C;color:#141C41;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;">Claim offer</div>
+                  </div>
+                  <div style="height:56px;border-radius:12px;background:#F5F6FA;"></div>
+                  <div style="height:56px;border-radius:12px;background:#F5F6FA;"></div>
+                  <div style="height:56px;border-radius:12px;background:#F5F6FA;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:17px;font-weight:600;">History</span>
+            <span style="font-size:14px;color:#6B7192;">6 sent in the last 90 days</span>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 110px 1fr 90px;gap:12px;padding:0 20px;height:48px;align-items:center;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">
+            <div>Message</div><div>Type</div><div>Audience</div><div>Sent</div><div>Seen / tapped</div><div>Status</div>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 110px 1fr 90px;gap:12px;padding:0 20px;height:72px;align-items:center;border-bottom:1px solid #EEF0F5;font-size:15px;">
+            <div style="font-weight:500;">Two months of Plus, on us</div>
+            <div style="color:#6B7192;">Offer</div>
+            <div style="color:#6B7192;">Free users · 78</div>
+            <div style="color:#6B7192;">28 Aug</div>
+            <div style="color:#6B7192;font-variant-numeric:tabular-nums lining-nums;">61 · 14</div>
+            <div><span style="display:inline-flex;height:24px;padding:0 10px;align-items:center;border-radius:999px;background:#EAF3EE;color:#2E7D5B;font-size:14px;font-weight:500;">Sent</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 110px 1fr 90px;gap:12px;padding:0 20px;height:72px;align-items:center;border-bottom:1px solid #EEF0F5;font-size:15px;">
+            <div style="font-weight:500;">Backup your data before you switch phones</div>
+            <div style="color:#6B7192;">Announcement · banner</div>
+            <div style="color:#6B7192;">All users · 98</div>
+            <div style="color:#6B7192;">21 Aug</div>
+            <div style="color:#6B7192;font-variant-numeric:tabular-nums lining-nums;">88 · 31</div>
+            <div><span style="display:inline-flex;height:24px;padding:0 10px;align-items:center;border-radius:999px;background:#EAF3EE;color:#2E7D5B;font-size:14px;font-weight:500;">Ended</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 110px 1fr 90px;gap:12px;padding:0 20px;height:72px;align-items:center;border-bottom:1px solid #EEF0F5;font-size:15px;">
+            <div style="font-weight:500;">Independence week — ₹99 for 3 months</div>
+            <div style="color:#6B7192;">Offer</div>
+            <div style="color:#6B7192;">Custom · 34</div>
+            <div style="color:#6B7192;">14 Aug</div>
+            <div style="color:#6B7192;font-variant-numeric:tabular-nums lining-nums;">29 · 9</div>
+            <div><span style="display:inline-flex;height:24px;padding:0 10px;align-items:center;border-radius:999px;background:#EAF3EE;color:#2E7D5B;font-size:14px;font-weight:500;">Sent</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 110px 1fr 90px;gap:12px;padding:0 20px;height:72px;align-items:center;font-size:15px;">
+            <div style="font-weight:500;">New: split bills with contacts</div>
+            <div style="color:#6B7192;">Announcement · modal</div>
+            <div style="color:#6B7192;">Plus users · 21</div>
+            <div style="color:#6B7192;">6 Sep</div>
+            <div style="color:#6B7192;">—</div>
+            <div><span style="display:inline-flex;height:24px;padding:0 10px;align-items:center;border-radius:999px;background:#FAF3E0;color:#8A6F1F;font-size:14px;font-weight:500;">Scheduled</span></div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ADMINS -->
+    <sc-if value="{{ isAdmins }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start;">
+
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0;">
+          <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+            <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:17px;font-weight:600;">Admins</span>
+              <span style="font-size:14px;color:#6B7192;">{{ adminCount }}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 130px;gap:12px;padding:0 20px;height:48px;align-items:center;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">
+              <div>Admin</div><div>Role</div><div>Last active</div><div>Access</div>
+            </div>
+            <sc-for list="{{ admins }}" as="a" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 130px;gap:12px;padding:0 20px;height:72px;align-items:center;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                  <div style="width:32px;height:32px;flex:0 0 32px;border-radius:999px;background:#141C41;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">{{ a.initials }}</div>
+                  <div style="display:flex;flex-direction:column;min-width:0;">
+                    <span style="font-weight:500;">{{ a.name }}</span>
+                    <span style="font-size:13px;color:#6B7192;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ a.email }}</span>
+                  </div>
+                </div>
+                <div>
+                  <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-size:14px;font-weight:500;background:{{ a.roleBg }};color:{{ a.roleFg }};">{{ a.role }}</span>
+                </div>
+                <div style="color:#6B7192;">{{ a.last }}</div>
+                <div>
+                  <span onClick="{{ a.toggle }}" style="font-size:15px;font-weight:500;cursor:pointer;text-decoration:underline;color:{{ a.actionFg }};">{{ a.action }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+            <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:17px;font-weight:600;">Activity log</span>
+              <div style="position:relative;display:flex;">
+                <div onClick="{{ toggleLogMenu }}" style="display:flex;align-items:center;gap:10px;padding:10px 14px;padding-right:34px;border:1px solid {{ logBorder }};border-radius:8px;background:#FFFFFF;font-size:14px;color:#141C41;cursor:pointer;">{{ logFilter }}</div>
+                <i class="{{ logCaret }}" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;color:#6B7192;pointer-events:none;"></i>
+                <sc-if value="{{ logMenuOpen }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ closeFilterMenu }}" style="position:fixed;inset:0;z-index:11;"></div>
+                  <div style="position:absolute;top:calc(100% + 6px);right:0;min-width:100%;width:max-content;background:#FFFFFF;border:1px solid #E1E3EC;border-radius:8px;z-index:12;overflow:hidden;padding:4px;display:flex;flex-direction:column;gap:2px;">
+                    <sc-for list="{{ logOptions }}" as="o" hint-placeholder-count="4">
+                      <div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:4px;font-size:14px;cursor:pointer;white-space:nowrap;background:{{ o.bg }};color:{{ o.fg }};font-weight:{{ o.fw }};" style-hover="background:#F5F6FA;">
+                        <i class="ph ph-check" style="font-size:14px;color:#C9A84C;opacity:{{ o.mark }};"></i>{{ o.label }}
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;">
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                <i class="ph ph-prohibit" style="font-size:16px;color:#C94A3B;"></i>
+                <div style="flex:1;"><span style="font-weight:500;">Priya Desai</span> deactivated account <span style="color:#6B7192;">arjun.k@gmail.com</span></div>
+                <span style="font-size:14px;color:#9AA0B8;">Today, 11:04</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                <i class="ph ph-seal-check" style="font-size:16px;color:#C9A84C;"></i>
+                <div style="flex:1;"><span style="font-weight:500;">Kabir Anand</span> granted Plus to <span style="color:#6B7192;">Meera Nair</span> — 3 months, goodwill</div>
+                <span style="font-size:14px;color:#9AA0B8;">Yesterday, 18:22</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                <i class="ph ph-paper-plane-tilt" style="font-size:16px;color:#141C41;"></i>
+                <div style="flex:1;"><span style="font-weight:500;">Priya Desai</span> sent offer "Two months of Plus, on us" to 78 free users</div>
+                <span style="font-size:14px;color:#9AA0B8;">28 Aug, 10:10</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:16px 22px;font-size:15px;">
+                <i class="ph ph-user-minus" style="font-size:16px;color:#6B7192;"></i>
+                <div style="flex:1;"><span style="font-weight:500;">Priya Desai</span> deactivated admin access for <span style="color:#6B7192;">tarun@dhan.app</span></div>
+                <span style="font-size:14px;color:#9AA0B8;">22 Aug, 09:47</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <span style="font-size:17px;font-weight:600;">Invite an admin</span>
+            <span style="font-size:14px;color:#6B7192;line-height:1.5;">They'll get an email invite. Access starts once they sign in.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:14px;font-weight:500;">Work email</span>
+            <input value="{{ inviteEmail }}" onChange="{{ onInviteEmail }}" placeholder="name@dhan.app" style="padding:12px 16px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;" />
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <span style="font-size:14px;font-weight:500;">Role</span>
+            <div onClick="{{ setRoleSuper }}" style="display:flex;gap:10px;padding:12px;border-radius:8px;cursor:pointer;border:1px solid {{ roleBorder.super }};background:{{ roleCardBg.super }};">
+              <i class="{{ roleIcon.super }} ph-shield-star" style="font-size:17px;color:#141C41;margin-top:1px;"></i>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <span style="font-size:15px;font-weight:500;">Super admin</span>
+                <span style="font-size:14px;color:#6B7192;line-height:1.45;">Everything, including deactivations and admin management.</span>
+              </div>
+            </div>
+            <div onClick="{{ setRoleSupport }}" style="display:flex;gap:10px;padding:12px;border-radius:8px;cursor:pointer;border:1px solid {{ roleBorder.support }};background:{{ roleCardBg.support }};">
+              <i class="{{ roleIcon.support }} ph-lifebuoy" style="font-size:17px;color:#141C41;margin-top:1px;"></i>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <span style="font-size:15px;font-weight:500;">Support admin</span>
+                <span style="font-size:14px;color:#6B7192;line-height:1.45;">View customers, grant Plus, send offers. No deactivations.</span>
+              </div>
+            </div>
+          </div>
+          <div onClick="{{ sendInvite }}" style="padding:12px 16px;border-radius:12px;background:#141C41;color:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer;" style-hover="opacity:0.88;">
+            <i class="ph ph-envelope-simple" style="font-size:15px;"></i>Send invite
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- SETTINGS -->
+    <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:32px;display:flex;flex-direction:column;gap:32px;max-width:920px;">
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;">
+          <div style="padding:20px 32px;border-bottom:1px solid #EEF0F5;font-size:17px;font-weight:600;">Workspace</div>
+          <div style="padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:14px;font-weight:500;">Console name</span>
+              <input value="Dhan admin console" style="padding:12px 16px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;" />
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <span style="font-size:14px;font-weight:500;">Support inbox</span>
+              <input value="help@dhan.app" style="padding:12px 16px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;" />
+            </div>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;">
+          <div style="padding:20px 32px;border-bottom:1px solid #EEF0F5;font-size:17px;font-weight:600;">Plans &amp; pricing</div>
+          <div style="padding:32px;display:flex;flex-direction:column;gap:20px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px;">
+              <div style="display:flex;flex-direction:column;"><span style="font-weight:500;">Plus — monthly</span><span style="font-size:14px;color:#6B7192;">Shown in-app on the upgrade sheet</span></div>
+              <span style="font-weight:600;font-variant-numeric:tabular-nums lining-nums;">₹199</span>
+            </div>
+            <div style="height:1px;background:#EEF0F5;"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px;">
+              <div style="display:flex;flex-direction:column;"><span style="font-weight:500;">Plus — yearly</span><span style="font-size:14px;color:#6B7192;">2 months free</span></div>
+              <span style="font-weight:600;font-variant-numeric:tabular-nums lining-nums;">₹1,990</span>
+            </div>
+            <div style="height:1px;background:#EEF0F5;"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px;">
+              <div style="display:flex;flex-direction:column;"><span style="font-weight:500;">Free trial length</span><span style="font-size:14px;color:#6B7192;">Applied to new signups</span></div>
+              <span style="font-weight:600;">14 days</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;">
+          <div style="padding:20px 32px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <span style="font-size:17px;font-weight:600;">Notification preferences</span>
+            <span style="font-size:14px;color:#6B7192;">{{ prefSummary }}</span>
+          </div>
+          <div style="padding:32px;display:flex;flex-direction:column;gap:20px;">
+            <sc-for list="{{ prefs }}" as="p" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:20px;">
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <div style="width:34px;height:34px;flex:0 0 34px;border-radius:8px;background:{{ p.iconBg }};display:flex;align-items:center;justify-content:center;">
+                    <i class="{{ p.icon }}" style="font-size:16px;color:{{ p.iconFg }};"></i>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
+                    <span style="font-size:15px;font-weight:500;">{{ p.label }}</span>
+                    <span style="font-size:14px;color:#6B7192;line-height:1.45;">{{ p.desc }}</span>
+                  </div>
+                  <div onClick="{{ p.toggle }}" style="width:44px;height:26px;flex:0 0 44px;border-radius:999px;padding:3px;display:flex;align-items:center;cursor:pointer;background:{{ p.trackBg }};transition:background 160ms cubic-bezier(0.22,0.61,0.36,1);">
+                    <div style="width:20px;height:20px;border-radius:999px;background:#FFFFFF;transform:translateX({{ p.knobX }});transition:transform 200ms cubic-bezier(0.34,1.56,0.64,1);"></div>
+                  </div>
+                </div>
+                <div style="height:1px;background:{{ p.rule }};"></div>
+              </div>
+            </sc-for>
+            <div style="display:flex;gap:10px;padding:14px 16px;border-radius:8px;background:#F5F6FA;">
+              <i class="ph ph-bell-ringing" style="font-size:15px;color:#6B7192;margin-top:2px;"></i>
+              <span style="font-size:14px;color:#6B7192;line-height:1.5;">These settings only change what {{ meName }} sees in the console bell. Every event is still recorded in the activity log.</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;">
+          <div style="padding:20px 32px;border-bottom:1px solid #EEF0F5;font-size:17px;font-weight:600;">Data access</div>
+          <div style="padding:32px;display:flex;gap:16px;">
+            <i class="ph ph-lock-simple" style="font-size:18px;color:#141C41;margin-top:2px;"></i>
+            <div style="font-size:15px;color:#6B7192;line-height:1.6;">
+              Dhan is local-first. Transactions, budgets and bills live on the user's device and back up as an encrypted snapshot to their own Google Drive or iCloud. This console can only read account and subscription metadata — no admin, including super admins, can view a customer's financial data.
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- PENDING SUPPORT -->
+    <sc-if value="{{ isSupport }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div onClick="{{ goOverview }}" style="display:flex;align-items:center;gap:6px;font-size:15px;color:#6B7192;cursor:pointer;">
+            <i class="ph ph-arrow-left" style="font-size:14px;"></i>Back to overview
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:15px;color:#6B7192;">
+            <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;background:#F8ECEA;color:#A93B2E;">2 open</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;background:#FAF3E0;color:#8A6F1F;">1 in progress</span>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:17px;font-weight:600;">Open support items</span>
+            <span style="font-size:14px;color:#6B7192;">Click a row to open the customer's account</span>
+          </div>
+          <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,2fr) 110px 100px 120px;gap:12px;padding:0 20px;height:48px;align-items:center;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">
+            <div>Customer</div><div>Issue</div><div>Raised</div><div>Days open</div><div>Status</div>
+          </div>
+          <sc-for list="{{ issues }}" as="it" hint-placeholder-count="3">
+            <div onClick="{{ it.open }}" style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,2fr) 110px 100px 120px;gap:12px;padding:0 20px;height:72px;align-items:center;border-bottom:1px solid #EEF0F5;font-size:15px;cursor:pointer;" style-hover="background:#F9FAFC;">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                <div style="width:32px;height:32px;flex:0 0 32px;border-radius:999px;background:#EDEFF6;color:#141C41;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">{{ it.initials }}</div>
+                <div style="display:flex;flex-direction:column;min-width:0;">
+                  <span style="font-weight:500;">{{ it.customer }}</span>
+                  <span style="font-size:13px;color:#6B7192;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ it.email }}</span>
+                </div>
+              </div>
+              <div style="min-width:0;">
+                <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ it.title }}</div>
+                <div style="font-size:13px;color:#6B7192;">via {{ it.channel }}</div>
+              </div>
+              <div style="color:#6B7192;">{{ it.raised }}</div>
+              <div style="color:#6B7192;font-variant-numeric:tabular-nums lining-nums;">{{ it.days }}</div>
+              <div>
+                <span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;font-size:14px;background:{{ it.statusBg }};color:{{ it.statusFg }};">{{ it.status }}</span>
+              </div>
+            </div>
+          </sc-for>
+          <div style="padding:16px 22px;font-size:14px;color:#6B7192;">Support items come from help@dhan.app and the in-app help sheet. No financial data is attached to a ticket.</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- NOTIFICATIONS -->
+    <sc-if value="{{ isNotifs }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div onClick="{{ goOverview }}" style="display:flex;align-items:center;gap:6px;font-size:15px;color:#6B7192;cursor:pointer;">
+            <i class="ph ph-arrow-left" style="font-size:14px;"></i>Back to overview
+          </div>
+          <div style="flex:1;"></div>
+          <div style="display:flex;align-items:center;gap:4px;padding:4px;border:1px solid #E1E3EC;border-radius:999px;background:#FFFFFF;">
+            <div onClick="{{ setNotifAll }}" style="display:flex;align-items:center;height:30px;padding:0 14px;border-radius:999px;font-size:14px;cursor:pointer;background:{{ nfBg.all }};color:{{ nfFg.all }};font-weight:{{ nfFw.all }};">All</div>
+            <div onClick="{{ setNotifUnread }}" style="display:flex;align-items:center;gap:6px;height:30px;padding:0 14px;border-radius:999px;font-size:14px;cursor:pointer;background:{{ nfBg.unread }};color:{{ nfFg.unread }};font-weight:{{ nfFw.unread }};">Unread</div>
+          </div>
+          <div onClick="{{ markAllRead }}" style="display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid #E1E3EC;border-radius:12px;background:#FFFFFF;font-size:15px;font-weight:500;color:#141C41;cursor:pointer;" style-hover="background:#F5F6FA;">
+            <i class="ph ph-checks" style="font-size:16px;"></i>Mark all as read
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <div style="padding:16px 20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:17px;font-weight:600;">All notifications</span>
+            <span style="font-size:14px;color:#6B7192;">{{ unreadLabel }}</span>
+          </div>
+          <sc-for list="{{ notifGroups }}" as="g" hint-placeholder-count="2">
+            <div style="display:flex;flex-direction:column;">
+              <div style="padding:10px 22px;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;display:flex;align-items:center;justify-content:space-between;">
+                <span>{{ g.label }}</span>
+                <span style="font-variant-numeric:tabular-nums lining-nums;letter-spacing:0.04em;">{{ g.count }}</span>
+              </div>
+              <sc-for list="{{ g.items }}" as="n" hint-placeholder-count="3">
+                <div onClick="{{ n.open }}" style="display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid #EEF0F5;font-size:15px;cursor:pointer;background:{{ n.bg }};transition:background 120ms cubic-bezier(0.22,0.61,0.36,1);" style-hover="background:#F9FAFC;">
+                  <div style="width:30px;height:30px;flex:0 0 30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:{{ n.iconBg }};">
+                    <i class="{{ n.icon }}" style="font-size:15px;color:{{ n.iconFg }};"></i>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
+                    <span style="font-weight:{{ n.fw }};color:#141C41;">{{ n.text }}</span>
+                    <span style="font-size:13px;color:#6B7192;">{{ n.meta }}</span>
+                  </div>
+                  <span style="font-size:14px;color:#9AA0B8;white-space:nowrap;">{{ n.time }}</span>
+                  <span style="width:7px;height:7px;flex:0 0 7px;border-radius:999px;background:#C9A84C;opacity:{{ n.dot }};"></span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+          <sc-if value="{{ notifEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:48px 22px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <i class="ph ph-check-circle" style="font-size:28px;color:#9AA0B8;"></i>
+              <span style="font-size:15px;font-weight:500;">You're all caught up</span>
+              <span style="font-size:14px;color:#6B7192;">Nothing unread right now.</span>
+            </div>
+          </sc-if>
+          <div style="padding:16px 22px;font-size:14px;color:#6B7192;">Notifications cover account, subscription, support and admin events. Nothing here touches a user's transactions.</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- KYC EXCEPTION QUEUE -->
+    <sc-if value="{{ isKyc }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:10px;padding:16px;border-radius:8px;background:#EDEFF6;">
+          <i class="ph ph-lock-simple" style="font-size:16px;color:#141C41;margin-top:2px;"></i>
+          <div style="font-size:14px;color:#6B7192;line-height:1.55;">Verification runs through Digilocker via our middleware partner. Dhan never stores KYC documents — this queue holds only the reference and the outcome, for cases the automated check couldn't clear.</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:4px;padding:4px;border:1px solid #E1E3EC;border-radius:999px;background:#FFFFFF;">
+            <sc-for list="{{ kycTabs }}" as="t" hint-placeholder-count="4">
+              <div onClick="{{ t.pick }}" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:999px;font-size:15px;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};font-weight:{{ t.fw }};">
+                {{ t.label }}<span style="font-variant-numeric:tabular-nums lining-nums;opacity:0.7;">{{ t.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="flex:1;"></div>
+          <div style="font-size:15px;color:#6B7192;">{{ kycCountLabel }}</div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <div style="overflow-x:auto;">
+          <div style="display:grid;grid-template-columns:minmax(200px,1.8fr) 130px minmax(120px,1.1fr) 110px minmax(200px,1.6fr);align-items:center;gap:12px;padding:0 20px;height:48px;min-width:860px;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">
+            <div>Customer</div>
+            <div>KYC status</div>
+            <div>Reference ID</div>
+            <div>Submitted</div>
+            <div>Failure reason</div>
+          </div>
+          <sc-for list="{{ kycRows }}" as="k" hint-placeholder-count="6">
+            <div onClick="{{ k.open }}" style="display:grid;grid-template-columns:minmax(200px,1.8fr) 130px minmax(120px,1.1fr) 110px minmax(200px,1.6fr);align-items:center;gap:12px;padding:14px 20px;min-height:72px;min-width:860px;border-bottom:1px solid #EEF0F5;cursor:pointer;font-size:15px;background:{{ k.rowBg }};" style-hover="background:#F9FAFC;">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                <div style="width:32px;height:32px;flex:0 0 32px;border-radius:999px;background:#EDEFF6;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">{{ k.initials }}</div>
+                <div style="display:flex;flex-direction:column;min-width:0;">
+                  <span style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ k.name }}</span>
+                  <span style="font-size:13px;color:#6B7192;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ k.email }}</span>
+                </div>
+              </div>
+              <div>
+                <span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;font-size:14px;font-weight:500;background:{{ k.stBg }};color:{{ k.stFg }};">{{ k.status }}</span>
+              </div>
+              <div style="color:#6B7192;font-size:14px;font-variant-numeric:tabular-nums lining-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ k.ref }}</div>
+              <div style="color:#6B7192;font-variant-numeric:tabular-nums lining-nums;">{{ k.submitted }}</div>
+              <div style="color:{{ k.reasonFg }};font-size:14px;line-height:1.4;">{{ k.reason }}</div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ kycEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:48px 22px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+              <i class="ph ph-check-circle" style="font-size:28px;color:#9AA0B8;"></i>
+              <span style="font-size:15px;font-weight:500;">Nothing in this queue</span>
+              <span style="font-size:14px;color:#6B7192;">No exceptions with this status right now.</span>
+            </div>
+          </sc-if>
+          </div>
+          <div style="padding:16px 22px;font-size:14px;color:#6B7192;">Only the middleware reference and outcome are stored. No documents, images or file uploads.</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- RISK & SECURITY -->
+    <sc-if value="{{ isRisk }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;">
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <div style="padding:20px 22px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span style="font-size:17px;font-weight:600;">Suspicious login alerts</span>
+              <span style="font-size:14px;color:#6B7192;">Flagged by device and location heuristics. City-level only — we don't store precise location.</span>
+            </div>
+            <div style="flex:1;"></div>
+            <span style="font-size:14px;color:#6B7192;">{{ loginUnreviewedLabel }}</span>
+          </div>
+          <div style="overflow-x:auto;">
+          <div style="display:grid;grid-template-columns:minmax(150px,1.5fr) minmax(150px,1.2fr) minmax(110px,1fr) 130px minmax(190px,1.4fr) 170px;align-items:center;gap:12px;padding:0 20px;height:48px;min-width:1040px;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">
+            <div>Customer</div>
+            <div>Device</div>
+            <div>Location</div>
+            <div>When</div>
+            <div>Risk reason</div>
+            <div>Status</div>
+          </div>
+          <sc-for list="{{ loginRows }}" as="l" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:minmax(150px,1.5fr) minmax(150px,1.2fr) minmax(110px,1fr) 130px minmax(190px,1.4fr) 170px;align-items:center;gap:12px;padding:14px 20px;min-height:72px;min-width:1040px;border-bottom:1px solid #EEF0F5;font-size:15px;background:{{ l.rowBg }};">
+              <div onClick="{{ l.openCust }}" style="display:flex;flex-direction:column;min-width:0;cursor:pointer;">
+                <span style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.name }}</span>
+                <span style="font-size:13px;color:#6B7192;">View customer</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;color:#6B7192;font-size:14px;min-width:0;">
+                <i class="{{ l.platIcon }}" style="font-size:15px;"></i><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.device }}</span>
+              </div>
+              <div style="color:#6B7192;font-size:14px;">{{ l.city }}</div>
+              <div style="color:#6B7192;font-size:14px;font-variant-numeric:tabular-nums lining-nums;">{{ l.when }}</div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:14px;">
+                <i class="{{ l.reasonIcon }}" style="font-size:15px;color:#C07E1E;"></i><span style="line-height:1.4;">{{ l.reason }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px;">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:{{ l.stFg }};">
+                  <span style="width:6px;height:6px;border-radius:999px;background:{{ l.stFg }};"></span>{{ l.status }}
+                </span>
+                <sc-if value="{{ l.canReview }}" hint-placeholder-val="{{ true }}">
+                  <span onClick="{{ l.review }}" style="font-size:14px;font-weight:500;color:#141C41;text-decoration:underline;cursor:pointer;">Mark reviewed</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+          </div>
+          <div style="padding:16px 22px;font-size:14px;color:#6B7192;">Reviewing an alert only clears the flag. Sign-out and device revocation happen from the customer's detail drawer.</div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <div style="padding:20px 22px;border-bottom:1px solid #EEF0F5;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span style="font-size:17px;font-weight:600;">Data deletion requests</span>
+              <span style="font-size:14px;color:#6B7192;">Right-to-erasure requests raised by customers. Independent of account deactivation.</span>
+            </div>
+            <div style="flex:1;"></div>
+            <span style="font-size:14px;color:#6B7192;">{{ delPendingLabel }}</span>
+          </div>
+          <div style="overflow-x:auto;">
+          <div style="display:grid;grid-template-columns:minmax(180px,1.5fr) 120px 130px minmax(150px,1.4fr) 175px;align-items:center;gap:12px;padding:0 20px;height:48px;min-width:880px;background:#F5F6FA;border-bottom:1px solid #EEF0F5;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">
+            <div>Customer</div>
+            <div>Requested</div>
+            <div>Status</div>
+            <div>KYC exception</div>
+            <div>Action</div>
+          </div>
+          <sc-for list="{{ delRows }}" as="d" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:minmax(180px,1.5fr) 120px 130px minmax(150px,1.4fr) 175px;align-items:center;gap:12px;padding:14px 20px;min-height:72px;min-width:880px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+              <div onClick="{{ d.openCust }}" style="display:flex;flex-direction:column;min-width:0;cursor:pointer;">
+                <span style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ d.name }}</span>
+                <span style="font-size:13px;color:#6B7192;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ d.email }}</span>
+              </div>
+              <div style="color:#6B7192;font-size:14px;font-variant-numeric:tabular-nums lining-nums;">{{ d.requested }}</div>
+              <div>
+                <span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;font-size:14px;font-weight:500;background:{{ d.stBg }};color:{{ d.stFg }};">{{ d.status }}</span>
+              </div>
+              <div style="font-size:14px;color:#6B7192;">
+                <sc-if value="{{ d.hasKyc }}" hint-placeholder-val="{{ false }}">
+                  <span onClick="{{ d.openKyc }}" style="color:#141C41;text-decoration:underline;cursor:pointer;font-variant-numeric:tabular-nums lining-nums;">{{ d.kycRef }}</span>
+                </sc-if>
+                <sc-if value="{{ d.noKyc }}" hint-placeholder-val="{{ false }}">
+                  <span>None linked</span>
+                </sc-if>
+              </div>
+              <div>
+                <sc-if value="{{ d.canProcess }}" hint-placeholder-val="{{ true }}">
+                  <div onClick="{{ d.ask }}" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid #E1E3EC;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;" style-hover="background:#F5F6FA;">
+                    <i class="ph ph-check" style="font-size:14px;"></i>Mark processed
+                  </div>
+                </sc-if>
+                <sc-if value="{{ d.done }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:14px;color:#6B7192;">{{ d.completedNote }}</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+          </div>
+          <div style="padding:16px 22px;font-size:14px;color:#6B7192;">Erasure is carried out by engineering within 30 days of the request. Marking a request processed records the outcome here.</div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- Customer drawer -->
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:rgba(20,28,65,0.48);z-index:20;display:flex;justify-content:flex-end;animation:dhanFade 200ms cubic-bezier(0.22,0.61,0.36,1);">
+      <div onClick="{{ closeDrawer }}" style="flex:1;"></div>
+      <div style="width:440px;background:#FFFFFF;height:100vh;overflow-y:auto;display:flex;flex-direction:column;animation:dhanSlide 240ms cubic-bezier(0.22,0.61,0.36,1);">
+        <div style="padding:20px;border-bottom:1px solid #EEF0F5;display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:44px;height:44px;flex:0 0 44px;border-radius:999px;background:#EDEFF6;color:#141C41;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;">{{ cust.initials }}</div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">
+            <span style="font-size:19px;font-weight:600;">{{ cust.name }}</span>
+            <span style="font-size:15px;color:#6B7192;">{{ cust.email }}</span>
+          </div>
+          <div onClick="{{ closeDrawer }}" style="width:32px;height:32px;border-radius:8px;border:1px solid #E1E3EC;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+            <i class="ph ph-x" style="font-size:15px;"></i>
+          </div>
+        </div>
+
+        <div style="padding:20px;display:flex;flex-direction:column;gap:24px;">
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Account</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div style="display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #EEF0F5;border-radius:8px;">
+                <span style="font-size:13px;color:#6B7192;">Phone</span><span style="font-size:15px;font-weight:500;font-variant-numeric:tabular-nums lining-nums;">{{ cust.phone }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #EEF0F5;border-radius:8px;">
+                <span style="font-size:13px;color:#6B7192;">Signed up</span><span style="font-size:15px;font-weight:500;">{{ cust.signup }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #EEF0F5;border-radius:8px;">
+                <span style="font-size:13px;color:#6B7192;">Platform</span><span style="font-size:15px;font-weight:500;">{{ cust.platform }} · {{ cust.appVersion }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #EEF0F5;border-radius:8px;">
+                <span style="font-size:13px;color:#6B7192;">Last active</span><span style="font-size:15px;font-weight:500;">{{ cust.lastActive }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #EEF0F5;border-radius:8px;">
+                <span style="font-size:13px;color:#6B7192;">Status</span><span style="font-size:15px;font-weight:500;color:{{ cust.statusFg }};">{{ cust.status }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:12px;border:1px solid #EEF0F5;border-radius:8px;">
+                <span style="font-size:13px;color:#6B7192;">Last backup</span><span style="font-size:15px;font-weight:500;">{{ cust.backup }}</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;padding:12px;border-radius:8px;background:#F5F6FA;">
+              <i class="ph ph-lock-simple" style="font-size:15px;color:#6B7192;margin-top:2px;"></i>
+              <span style="font-size:14px;color:#6B7192;line-height:1.5;">No financial data available — transactions and budgets never leave the customer's device.</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Subscription</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid #EEF0F5;border-radius:8px;">
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <span style="font-size:16px;font-weight:600;">{{ cust.planLabel }}</span>
+                <span style="font-size:14px;color:#6B7192;">{{ cust.planNote }}</span>
+              </div>
+              <span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font-size:14px;font-weight:500;background:{{ cust.planBg }};color:{{ cust.planFg }};">{{ cust.plan }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;">
+              <sc-for list="{{ cust.history }}" as="h" hint-placeholder-count="3">
+                <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #EEF0F5;font-size:15px;">
+                  <span style="width:64px;flex:0 0 64px;color:#9AA0B8;font-size:14px;">{{ h.date }}</span>
+                  <span style="flex:1;">{{ h.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Actions</span>
+            <div onClick="{{ togglePlus }}" style="padding:12px 16px;border-radius:12px;background:#141C41;color:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer;" style-hover="opacity:0.88;">
+              <i class="ph ph-seal-check" style="font-size:15px;"></i>{{ cust.plusAction }}
+            </div>
+            <div onClick="{{ sendIndividual }}" style="padding:12px 16px;border-radius:12px;border:1px solid #E1E3EC;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:500;cursor:pointer;" style-hover="background:#F5F6FA;">
+              <i class="ph ph-paper-plane-tilt" style="font-size:15px;"></i>Send offer message
+            </div>
+            <div onClick="{{ askDelete }}" style="padding:12px 16px;border-radius:12px;border:1px solid #E9C9C4;color:#C94A3B;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:500;cursor:pointer;" style-hover="background:#FDF4F3;">
+              <i class="ph ph-prohibit" style="font-size:15px;"></i>Deactivate account
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- KYC exception detail -->
+  <sc-if value="{{ hasKycPanel }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeKyc }}" style="position:fixed;inset:0;background:rgba(20,28,65,0.48);z-index:20;animation:dhanFade 160ms cubic-bezier(0.22,0.61,0.36,1);"></div>
+    <div style="position:fixed;top:0;right:0;bottom:0;width:520px;max-width:92vw;background:#FFFFFF;z-index:21;display:flex;flex-direction:column;animation:dhanSlide 200ms cubic-bezier(0.22,0.61,0.36,1);overflow-y:auto;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid #EEF0F5;position:sticky;top:0;background:#FFFFFF;">
+        <span style="font-size:17px;font-weight:600;">KYC exception</span>
+        <div onClick="{{ closeKyc }}" style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:#F5F6FA;">
+          <i class="ph ph-x" style="font-size:15px;"></i>
+        </div>
+      </div>
+      <div style="padding:24px;display:flex;flex-direction:column;gap:24px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:48px;height:48px;flex:0 0 48px;border-radius:999px;background:#EDEFF6;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;">{{ kyc.initials }}</div>
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0;">
+            <span style="font-size:19px;font-weight:600;">{{ kyc.name }}</span>
+            <span onClick="{{ kyc.openCust }}" style="font-size:14px;color:#141C41;text-decoration:underline;cursor:pointer;">Open customer record</span>
+          </div>
+          <div style="flex:1;"></div>
+          <span style="display:inline-flex;align-items:center;height:26px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500;background:{{ kyc.stBg }};color:{{ kyc.stFg }};">{{ kyc.status }}</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;border:1px solid #EEF0F5;border-radius:12px;overflow:hidden;">
+          <sc-for list="{{ kyc.fields }}" as="f" hint-placeholder-count="5">
+            <div style="display:flex;align-items:flex-start;gap:16px;padding:14px 18px;border-bottom:1px solid #EEF0F5;font-size:15px;">
+              <span style="width:150px;flex:0 0 150px;color:#6B7192;font-size:14px;">{{ f.label }}</span>
+              <span style="flex:1;line-height:1.5;font-variant-numeric:tabular-nums lining-nums;">{{ f.value }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;gap:10px;padding:14px 16px;border-radius:8px;background:#F5F6FA;">
+          <i class="ph ph-lock-simple" style="font-size:15px;color:#6B7192;margin-top:2px;"></i>
+          <span style="font-size:14px;color:#6B7192;line-height:1.5;">No documents are held here. To re-check identity, ask the customer to run Digilocker verification again from the app.</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B7192;">Resolve</span>
+          <div onClick="{{ kycApprove }}" style="padding:12px 16px;border-radius:12px;background:#141C41;color:#FFFFFF;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer;">
+            <i class="ph ph-check-circle" style="font-size:16px;color:#C9A84C;"></i>Approve manually
+          </div>
+          <div onClick="{{ kycResubmit }}" style="padding:12px 16px;border-radius:12px;border:1px solid #E1E3EC;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:500;cursor:pointer;" style-hover="background:#F5F6FA;">
+            <i class="ph ph-arrow-counter-clockwise" style="font-size:15px;"></i>Request resubmission
+          </div>
+          <div onClick="{{ kycReject }}" style="padding:12px 16px;border-radius:12px;border:1px solid #E9C9C4;color:#C94A3B;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:500;cursor:pointer;" style-hover="background:#FDF6F5;">
+            <i class="ph ph-x-circle" style="font-size:15px;"></i>Reject
+          </div>
+          <span style="font-size:14px;color:#6B7192;line-height:1.5;">Whatever you pick is logged against your admin ID and sent back to the middleware.</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Data deletion confirm -->
+  <sc-if value="{{ delConfirmOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:rgba(20,28,65,0.48);z-index:30;display:flex;align-items:center;justify-content:center;animation:dhanFade 160ms cubic-bezier(0.22,0.61,0.36,1);">
+      <div style="width:440px;background:#FFFFFF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="width:40px;height:40px;border-radius:8px;background:#EDEFF6;display:flex;align-items:center;justify-content:center;">
+          <i class="ph ph-database" style="font-size:20px;color:#141C41;"></i>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-size:19px;font-weight:600;">Mark {{ delTarget.name }}'s request as processed?</span>
+          <span style="font-size:15px;color:#6B7192;line-height:1.55;">Confirm that engineering has erased {{ delTarget.name }}'s server-side records. The request moves to Completed and is stamped with your admin ID and today's date.</span>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <div onClick="{{ cancelDelReq }}" style="padding:12px 16px;border-radius:12px;border:1px solid #E1E3EC;display:flex;align-items:center;font-size:15px;font-weight:500;cursor:pointer;">Cancel</div>
+          <div onClick="{{ doDelReq }}" style="padding:12px 16px;border-radius:12px;background:#141C41;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer;color:#FFFFFF;">
+            <i class="ph ph-check" style="font-size:15px;"></i>Mark processed
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Deactivate confirm -->
+  <sc-if value="{{ confirmOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:rgba(20,28,65,0.48);z-index:30;display:flex;align-items:center;justify-content:center;animation:dhanFade 160ms cubic-bezier(0.22,0.61,0.36,1);">
+      <div style="width:440px;background:#FFFFFF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="width:40px;height:40px;border-radius:8px;background:#F8ECEA;display:flex;align-items:center;justify-content:center;">
+          <i class="ph ph-prohibit" style="font-size:20px;color:#C94A3B;"></i>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-size:19px;font-weight:600;">Deactivate {{ cust.name }}'s account?</span>
+          <span style="font-size:15px;color:#6B7192;line-height:1.55;">This will deactivate {{ cust.name }}'s account. They'll lose access immediately, but no data will be permanently deleted. This action is logged against your admin ID.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <span style="font-size:14px;font-weight:500;">Type DEACTIVATE to confirm</span>
+          <input value="{{ confirmText }}" onChange="{{ onConfirmText }}" placeholder="DEACTIVATE" style="padding:12px 16px;border:1px solid #E1E3EC;border-radius:8px;font-size:15px;letter-spacing:0.08em;" />
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <div onClick="{{ cancelDelete }}" style="padding:12px 16px;border-radius:12px;border:1px solid #E1E3EC;display:flex;align-items:center;font-size:15px;font-weight:500;cursor:pointer;">Cancel</div>
+          <div onClick="{{ doDelete }}" style="padding:12px 16px;border-radius:12px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;cursor:pointer;color:#FFFFFF;background:{{ deleteBtnBg }};">
+            <i class="ph ph-prohibit" style="font-size:15px;"></i>Deactivate account
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Toast -->
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:10px;height:44px;padding:0 18px;border-radius:999px;background:#141C41;color:#FFFFFF;font-size:15px;font-weight:500;animation:dhanFade 160ms cubic-bezier(0.22,0.61,0.36,1);">
+      <i class="ph-fill ph-check-circle" style="font-size:17px;color:#C9A84C;"></i>{{ toast }}
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;adminName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Priya Desai&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Session&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;overview&quot;,&quot;customers&quot;,&quot;kyc&quot;,&quot;risk&quot;,&quot;offers&quot;,&quot;admins&quot;,&quot;settings&quot;,&quot;support&quot;,&quot;notifications&quot;],&quot;default&quot;:&quot;overview&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Session&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: null,
+    q: "", plan: "All", status: "Any status", range: "All time",
+    platform: "All platforms", sort: "Default order", view: "all",
+    hoverNav: "", bellOpen: false, profileOpen: false, bellRead: false,
+    sel: [], drawerId: null, confirmOpen: false, confirmText: "",
+    tab: "offer", aud: "free", annStyle: "banner",
+    offerTitle: "Two months of Plus, on us",
+    offerBody: "You've been budgeting with Dhan for a while. Here's 2 months of Plus — free, no card needed.",
+    inviteEmail: "", role: "support", toast: "",
+    prefs: { signup: true, plan: true, support: true, admin: false },
+    kycTab: "All", kycPanelId: null, delConfirmId: null,
+    openFilter: null, logFilter: "All admins", activity: "Any activity",
+    kycQueue: [
+      { id: 1, cid: 7, status: "Failed", ref: "SETU-9F4C21A", submitted: "2 Sep 2026", reason: "Name on Digilocker record doesn't match the name on the Dhan account", attempts: 2, channel: "Digilocker via Setu" },
+      { id: 2, cid: 3, status: "Pending", ref: "SETU-7B1D88E", submitted: "3 Sep 2026", reason: "", attempts: 1, channel: "Digilocker via Setu" },
+      { id: 3, cid: 9, status: "Manual review", ref: "SETU-4A0E63C", submitted: "31 Aug 2026", reason: "Aadhaar last-4 matched, date of birth did not — flagged for a human", attempts: 3, channel: "Digilocker via Setu" },
+      { id: 4, cid: 12, status: "Failed", ref: "SETU-2C8F510", submitted: "1 Sep 2026", reason: "Digilocker session timed out before consent was given", attempts: 1, channel: "Digilocker via Setu" },
+      { id: 5, cid: 5, status: "Manual review", ref: "SETU-6D3B074", submitted: "29 Aug 2026", reason: "Second account attempting to verify against the same Aadhaar reference", attempts: 2, channel: "Digilocker via Setu" },
+      { id: 6, cid: 10, status: "Pending", ref: "SETU-1E5A997", submitted: "3 Sep 2026", reason: "", attempts: 1, channel: "Digilocker via Setu" }
+    ],
+    logins: [
+      { id: 1, cid: 9, device: "Pixel 7a · Android 15", city: "Jaipur, RJ", when: "3 Sep, 04:12", reason: "New device and new city", status: "Unreviewed", platform: "Android" },
+      { id: 2, cid: 2, device: "iPhone 13 · iOS 18", city: "Dubai, AE", when: "2 Sep, 23:48", reason: "Login from outside India", status: "Unreviewed", platform: "iOS" },
+      { id: 3, cid: 12, device: "Redmi Note 12 · Android 14", city: "Mumbai, MH", when: "2 Sep, 19:05", reason: "4 failed OTP attempts before success", status: "Unreviewed", platform: "Android" },
+      { id: 4, cid: 1, device: "iPad Air · iOS 18", city: "Pune, MH", when: "1 Sep, 09:30", reason: "New device on a Plus account", status: "Reviewed", platform: "iOS" },
+      { id: 5, cid: 6, device: "Galaxy S23 · Android 15", city: "Kochi, KL", when: "31 Aug, 21:14", reason: "Unusual location for this account", status: "Reviewed", platform: "Android" }
+    ],
+    delReqs: [
+      { id: 1, cid: 5, requested: "1 Sep 2026", status: "Pending", kycId: 5 },
+      { id: 2, cid: 7, requested: "30 Aug 2026", status: "Processing", kycId: 1 },
+      { id: 3, cid: 13, requested: "26 Aug 2026", status: "Pending", kycId: null },
+      { id: 4, cid: 4, requested: "18 Aug 2026", status: "Completed", kycId: null, completedOn: "21 Aug 2026" }
+    ],
+    notifFilter: "all",
+    notifs: [
+      { id: 1, type: "signup", group: "today", text: "Ananya Sharma signed up on iOS", meta: "Free plan · app 1.4.2", time: "18 min ago", unread: true, cid: 3 },
+      { id: 2, type: "upgrade", group: "today", text: "Rohan Mehta upgraded to Plus — ₹199/mo", meta: "Paid via UPI · renews 3 Oct", time: "2 hours ago", unread: true, cid: 2 },
+      { id: 3, type: "support", group: "today", text: "Aditya Kulkarni raised a support item — UPI SMS import stopped working", meta: "Via email · unassigned", time: "4 hours ago", unread: true, to: "support" },
+      { id: 4, type: "cancel", group: "today", text: "Neha Iyer cancelled Plus — reason: \"not using it\"", meta: "Was on Plus since June", time: "5 hours ago", unread: false, cid: 5 },
+      { id: 5, type: "admin", group: "yesterday", text: "Kabir Anand granted Plus manually to Meera Nair", meta: "Support admin action · logged", time: "Yesterday, 18:42", unread: false, cid: 6 },
+      { id: 6, type: "signup", group: "yesterday", text: "Vikram Rao signed up on Android", meta: "Free plan · app 1.4.2", time: "Yesterday, 14:10", unread: false, cid: 4 },
+      { id: 7, type: "support", group: "yesterday", text: "Imran Shaikh's backup restore item moved to in progress", meta: "Kabir Anand picked it up", time: "Yesterday, 11:25", unread: false, to: "support" },
+      { id: 8, type: "offer", group: "yesterday", text: "\"Two months of Plus, on us\" sent to 81 free users", meta: "Opened by 34 · 6 upgraded", time: "Yesterday, 10:00", unread: false, to: "offers" },
+      { id: 9, type: "upgrade", group: "earlier", text: "Karan Bhatia upgraded to Plus — ₹199/mo", meta: "Paid via UPI", time: "1 Sep 2026", unread: false, cid: 11 },
+      { id: 10, type: "support", group: "earlier", text: "Neha Iyer reported being charged twice for Plus in August", meta: "Via in-app help · open", time: "1 Sep 2026", unread: false, to: "support" },
+      { id: 11, type: "admin", group: "earlier", text: "Priya Desai deactivated Tarun Bhatt's admin access", meta: "Super admin action · logged", time: "22 Aug 2026", unread: false, to: "admins" },
+      { id: 12, type: "cancel", group: "earlier", text: "Farhan Qureshi cancelled Plus — reason: \"too expensive\"", meta: "Now on Free plan", time: "29 Aug 2026", unread: false, cid: 13 }
+    ],
+    customers: [
+      { id: 1, name: "Priya Nair", email: "priya.nair@gmail.com", phone: "+91 98200 41122", signup: "12 Mar 2026", plan: "Plus", status: "Active", lastActive: "2 hours ago", platform: "iOS", appVersion: "1.4.2", backup: "Today, 07:12" },
+      { id: 2, name: "Rohan Mehta", email: "rohan.mehta@outlook.com", phone: "+91 99303 88210", signup: "3 Apr 2026", plan: "Plus", status: "Active", lastActive: "Today", platform: "Android", appVersion: "1.4.1", backup: "Yesterday, 23:40" },
+      { id: 3, name: "Ananya Sharma", email: "ananya.s@gmail.com", phone: "+91 97110 20934", signup: "3 Sep 2026", plan: "Free", status: "Active", lastActive: "18 min ago", platform: "iOS", appVersion: "1.4.2", backup: "Not yet" },
+      { id: 4, name: "Vikram Rao", email: "vikram.rao@gmail.com", phone: "+91 90040 77451", signup: "2 Sep 2026", plan: "Free", status: "Active", lastActive: "Yesterday", platform: "Android", appVersion: "1.4.2", backup: "Yesterday, 21:05" },
+      { id: 5, name: "Neha Iyer", email: "neha.iyer@yahoo.in", phone: "+91 88790 13366", signup: "18 Jan 2026", plan: "Free", status: "Inactive", lastActive: "23 days ago", platform: "iOS", appVersion: "1.3.6", backup: "10 Aug 2026", cancelledOn: "2 Sep 2026" },
+      { id: 6, name: "Meera Nair", email: "meera.n@gmail.com", phone: "+91 96450 90021", signup: "27 Feb 2026", plan: "Plus", status: "Active", lastActive: "4 hours ago", platform: "Android", appVersion: "1.4.2", backup: "Today, 06:30" },
+      { id: 7, name: "Aditya Kulkarni", email: "aditya.k@gmail.com", phone: "+91 93220 55870", signup: "9 May 2026", plan: "Free", status: "Active", lastActive: "3 days ago", platform: "Android", appVersion: "1.4.0", backup: "31 Aug 2026" },
+      { id: 8, name: "Sanya Kapoor", email: "sanya.kapoor@gmail.com", phone: "+91 98991 40025", signup: "21 Jun 2026", plan: "Plus", status: "Active", lastActive: "Today", platform: "iOS", appVersion: "1.4.2", backup: "Today, 08:45" },
+      { id: 9, name: "Imran Shaikh", email: "imran.shaikh@gmail.com", phone: "+91 82910 66743", signup: "14 Jul 2026", plan: "Free", status: "Suspended", lastActive: "12 days ago", platform: "Android", appVersion: "1.4.1", backup: "20 Aug 2026" },
+      { id: 10, name: "Tara Menon", email: "tara.menon@gmail.com", phone: "+91 90876 22119", signup: "30 Jul 2026", plan: "Free", status: "Active", lastActive: "Yesterday", platform: "iOS", appVersion: "1.4.2", backup: "Yesterday, 22:10" },
+      { id: 11, name: "Karan Bhatia", email: "karan.b@gmail.com", phone: "+91 99871 30052", signup: "8 Aug 2026", plan: "Plus", status: "Active", lastActive: "6 hours ago", platform: "Android", appVersion: "1.4.2", backup: "Today, 05:55" },
+      { id: 12, name: "Divya Reddy", email: "divya.reddy@gmail.com", phone: "+91 94400 71238", signup: "25 Aug 2026", plan: "Free", status: "Active", lastActive: "2 days ago", platform: "iOS", appVersion: "1.4.2", backup: "1 Sep 2026" },
+      { id: 13, name: "Farhan Qureshi", email: "farhan.q@gmail.com", phone: "+91 91670 44508", signup: "11 Feb 2026", plan: "Free", status: "Deactivated", lastActive: "Deactivated 29 Aug", platform: "Android", appVersion: "1.4.0", backup: "24 Aug 2026", cancelledOn: "29 Aug 2026" }
+    ],
+    issues: [
+      { id: 1, cid: 9, title: "Can't restore backup after switching phones", raised: "1 Sep 2026", days: 2, status: "In progress", channel: "Email" },
+      { id: 2, cid: 5, title: "Charged twice for Plus in August", raised: "1 Sep 2026", days: 2, status: "Open", channel: "In-app" },
+      { id: 3, cid: 7, title: "UPI SMS import stopped working on Android 15", raised: "2 Sep 2026", days: 1, status: "Open", channel: "Email" }
+    ],
+    adminList: [
+      { id: 1, name: "Priya Desai", email: "priya@dhan.app", role: "Super admin", last: "Now", active: true },
+      { id: 2, name: "Kabir Anand", email: "kabir@dhan.app", role: "Support admin", last: "Yesterday", active: true },
+      { id: 3, name: "Sana Qureshi", email: "sana@dhan.app", role: "Support admin", last: "3 days ago", active: true },
+      { id: 4, name: "Tarun Bhatt", email: "tarun@dhan.app", role: "Support admin", last: "22 Aug 2026", active: false }
+    ]
+  };
+
+  flash(msg) {
+    clearTimeout(this._t);
+    this.setState({ toast: msg });
+    this._t = setTimeout(() => this.setState({ toast: "" }), 2600);
+  }
+  go = (s) => () => this.setState({ screen: s, sel: [], bellOpen: false, profileOpen: false, view: s === "customers" ? "all" : this.state.view });
+  jump = (patch, msg) => () => {
+    this.setState(Object.assign({ screen: "customers", sel: [], bellOpen: false, profileOpen: false, plan: "All", status: "Any status", platform: "All platforms", sort: "Default order", activity: "Any activity", view: "all", q: "" }, patch));
+    if (msg) this.flash(msg);
+  };
+  parseDate(d) {
+    const m = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+    const p = d.split(" ");
+    return new Date(+p[2], m[p[1]] || 0, +p[0]).getTime();
+  }
+  active7(c) { return this.daysSince(c) <= 7; }
+  daysSince(c) {
+    const t = c.lastActive || "";
+    if (/min|hour|Today/i.test(t)) return 0;
+    if (/Yesterday/i.test(t)) return 1;
+    const d = t.match(/(\d+)\s+days?\s+ago/i);
+    if (d) return +d[1];
+    const dt = t.match(/(\d{1,2})\s+([A-Za-z]{3})/);
+    if (dt) {
+      const m = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 }[dt[2]];
+      if (m !== undefined) return Math.round((new Date(2026, 8, 3) - new Date(2026, m, +dt[1])) / 864e5);
+    }
+    return 999;
+  }
+  initials(n) { return n.split(" ").map(w => w[0]).slice(0, 2).join(""); }
+
+  navSty(screen, key) {
+    const on = screen === key;
+    return on;
+  }
+
+  filtered() {
+    const s = this.state, q = s.q.trim().toLowerCase();
+    let list = s.customers.filter(c => {
+      if (s.plan !== "All" && c.plan !== s.plan) return false;
+      if (s.status === "Recently cancelled Plus") { if (!c.cancelledOn) return false; }
+      else if (s.status !== "Any status" && c.status !== s.status) return false;
+      if (s.platform !== "All platforms" && c.platform !== s.platform) return false;
+      if (s.activity !== "Any activity") {
+        const days = this.daysSince(c);
+        if (s.activity === "Active in last 7 days" && days > 7) return false;
+        if (s.activity === "Active in last 30 days" && days > 30) return false;
+        if (s.activity === "Inactive 30+ days" && days < 30) return false;
+        if (s.activity === "Inactive 90+ days" && days < 90) return false;
+      }
+      if (s.range !== "All time") {
+        const days = { "Signed up: last 7 days": 7, "Signed up: last 30 days": 30, "Signed up: this quarter": 92 }[s.range];
+        const today = new Date(2026, 8, 3).getTime();
+        if (days && today - this.parseDate(c.signup) > days * 864e5) return false;
+      }
+      if (!q) return true;
+      const digits = q.replace(/[^0-9]/g, "");
+      const hay = (c.name + " " + c.email).toLowerCase();
+      const phone = c.phone.replace(/[^0-9]/g, "");
+      return hay.includes(q) || (digits.length > 0 && phone.includes(digits));
+    });
+    if (s.sort === "Newest signup first") list = list.slice().sort((a, b) => this.parseDate(b.signup) - this.parseDate(a.signup));
+    if (s.sort === "Oldest signup first") list = list.slice().sort((a, b) => this.parseDate(a.signup) - this.parseDate(b.signup));
+    if (s.sort === "Name A–Z") list = list.slice().sort((a, b) => a.name.localeCompare(b.name));
+    return list;
+  }
+
+  menuVals() {
+    const s = this.state;
+    const defs = [
+      { key: "status", value: s.status, options: ["Any status", "Active", "Inactive", "Deactivated", "Suspended", "Recently cancelled Plus"] },
+      { key: "range", value: s.range, options: ["All time", "Signed up: last 7 days", "Signed up: last 30 days", "Signed up: this quarter"] },
+      { key: "activity", value: s.activity, options: ["Any activity", "Active in last 7 days", "Active in last 30 days", "Inactive 30+ days", "Inactive 90+ days"] },
+      { key: "platform", value: s.platform, options: ["All platforms", "iOS", "Android"] },
+      { key: "sort", value: s.sort, options: ["Default order", "Newest signup first", "Oldest signup first", "Name A–Z"] }
+    ];
+    const opt = (label, selected, pick) => ({
+      label, pick, mark: selected ? 1 : 0,
+      bg: selected ? "#F5F6FA" : "transparent",
+      fg: "#141C41", fw: selected ? 500 : 400
+    });
+    return {
+      closeFilterMenu: () => this.setState({ openFilter: null }),
+      filterMenus: defs.map(d => {
+        const open = s.openFilter === d.key;
+        return {
+          value: d.value, open,
+          borderColor: open ? "#141C41" : "#E1E3EC",
+          caretIcon: open ? "ph ph-caret-up" : "ph ph-caret-down",
+          toggle: () => this.setState({ openFilter: open ? null : d.key }),
+          options: d.options.map(o => opt(o, o === d.value, () => this.setState({ [d.key]: o, openFilter: null, sel: [] })))
+        };
+      }),
+      logFilter: s.logFilter,
+      logMenuOpen: s.openFilter === "log",
+      logBorder: s.openFilter === "log" ? "#141C41" : "#E1E3EC",
+      logCaret: s.openFilter === "log" ? "ph ph-caret-up" : "ph ph-caret-down",
+      toggleLogMenu: () => this.setState({ openFilter: s.openFilter === "log" ? null : "log" }),
+      logOptions: ["All admins", "Priya Desai", "Kabir Anand", "Sana Qureshi"].map(o =>
+        opt(o, o === s.logFilter, () => this.setState({ logFilter: o, openFilter: null }))
+      )
+    };
+  }
+
+  kycStatusColor(st) {
+    if (st === "Failed") return ["#F8ECEA", "#C94A3B"];
+    if (st === "Pending") return ["#FDF1E3", "#C07E1E"];
+    return ["#EDEFF6", "#141C41"];
+  }
+
+  riskVals() {
+    const s = this.state;
+    const cust = (id) => s.customers.find(c => c.id === id) || { name: "Former user", email: "—" };
+    const counts = { All: s.kycQueue.length };
+    ["Pending", "Failed", "Manual review"].forEach(k => counts[k] = s.kycQueue.filter(x => x.status === k).length);
+    const shown = s.kycTab === "All" ? s.kycQueue : s.kycQueue.filter(x => x.status === s.kycTab);
+    const openKycPanel = (id) => this.setState({ kycPanelId: id, screen: "kyc" });
+
+    const kycRows = shown.map(k => {
+      const c = cust(k.cid);
+      const [stBg, stFg] = this.kycStatusColor(k.status);
+      return {
+        ...k, name: c.name, email: c.email, initials: this.initials(c.name),
+        stBg, stFg,
+        rowBg: k.status === "Failed" ? "#FDFAF9" : "#FFFFFF",
+        reason: k.reason || "No failure — waiting on the customer to finish Digilocker consent",
+        reasonFg: k.reason ? "#141C41" : "#9AA0B8",
+        open: () => openKycPanel(k.id)
+      };
+    });
+
+    const panel = s.kycQueue.find(k => k.id === s.kycPanelId);
+    const pc = panel ? cust(panel.cid) : null;
+    const [pBg, pFg] = panel ? this.kycStatusColor(panel.status) : ["", ""];
+    const resolve = (verb, msg) => () => {
+      this.setState(st => ({
+        kycQueue: st.kycQueue.filter(k => k.id !== st.kycPanelId),
+        kycPanelId: null
+      }));
+      this.flash(msg);
+    };
+
+    const unreviewed = s.logins.filter(l => l.status === "Unreviewed").length;
+    const loginRows = s.logins.map(l => {
+      const c = cust(l.cid);
+      const un = l.status === "Unreviewed";
+      return {
+        ...l, name: c.name,
+        platIcon: l.platform === "iOS" ? "ph ph-apple-logo" : "ph ph-android-logo",
+        reasonIcon: /outside India|location/i.test(l.reason) ? "ph ph-map-pin" : /OTP/i.test(l.reason) ? "ph ph-keyhole" : "ph ph-device-mobile",
+        stFg: un ? "#C07E1E" : "#2E7D5B",
+        rowBg: un ? "#FFFDF8" : "#FFFFFF",
+        canReview: un,
+        openCust: () => this.setState({ screen: "customers", drawerId: l.cid }),
+        review: () => {
+          this.setState(st => ({ logins: st.logins.map(x => x.id === l.id ? { ...x, status: "Reviewed" } : x) }));
+          this.flash(c.name + "'s login alert marked reviewed");
+        }
+      };
+    });
+
+    const delStatusColor = (st) => st === "Pending" ? ["#FDF1E3", "#C07E1E"] : st === "Processing" ? ["#EDEFF6", "#141C41"] : ["#EAF3EE", "#2E7D5B"];
+    const delRows = s.delReqs.map(d => {
+      const c = cust(d.cid);
+      const [stBg, stFg] = delStatusColor(d.status);
+      const k = d.kycId ? s.kycQueue.find(x => x.id === d.kycId) : null;
+      return {
+        ...d, name: c.name, email: c.email, stBg, stFg,
+        hasKyc: !!k, noKyc: !k, kycRef: k ? k.ref : "",
+        canProcess: d.status !== "Completed", done: d.status === "Completed",
+        completedNote: d.completedOn ? "Completed " + d.completedOn : "Completed",
+        openCust: () => this.setState({ screen: "customers", drawerId: d.cid }),
+        openKyc: () => k && openKycPanel(k.id),
+        ask: () => this.setState({ delConfirmId: d.id })
+      };
+    });
+    const delTargetReq = s.delReqs.find(d => d.id === s.delConfirmId);
+
+    return {
+      isKyc: (s.screen || this.props.startScreen || "overview") === "kyc",
+      isRisk: (s.screen || this.props.startScreen || "overview") === "risk",
+      kycOpenCount: s.kycQueue.length,
+      kycRows, kycEmpty: kycRows.length === 0,
+      kycCountLabel: "Showing " + kycRows.length + " of " + s.kycQueue.length + " exceptions",
+      kycTabs: ["All", "Pending", "Failed", "Manual review"].map(label => {
+        const on = s.kycTab === label;
+        return {
+          label, count: counts[label],
+          bg: on ? "#141C41" : "transparent", fg: on ? "#FFFFFF" : "#6B7192", fw: on ? 500 : 400,
+          pick: () => this.setState({ kycTab: label })
+        };
+      }),
+      hasKycPanel: !!panel,
+      closeKyc: () => this.setState({ kycPanelId: null }),
+      kyc: panel ? {
+        name: pc.name, initials: this.initials(pc.name), status: panel.status, stBg: pBg, stFg: pFg,
+        openCust: () => this.setState({ screen: "customers", drawerId: panel.cid, kycPanelId: null }),
+        fields: [
+          { label: "Customer", value: pc.name },
+          { label: "KYC status", value: panel.status },
+          { label: "Reference ID", value: panel.ref },
+          { label: "Date submitted", value: panel.submitted },
+          { label: "Attempts", value: panel.attempts === 1 ? "1 attempt" : panel.attempts + " attempts" },
+          { label: "Verified via", value: panel.channel },
+          { label: "Failure reason", value: panel.reason || "None — consent not completed yet" }
+        ]
+      } : { name: "", initials: "", status: "", fields: [] },
+      kycApprove: resolve("approved", panel ? pc.name + "'s KYC approved manually · logged" : ""),
+      kycReject: resolve("rejected", panel ? pc.name + "'s KYC rejected · logged" : ""),
+      kycResubmit: resolve("resubmit", panel ? "Resubmission requested from " + pc.name : ""),
+
+      loginRows,
+      loginUnreviewedLabel: unreviewed === 0 ? "All alerts reviewed" : unreviewed + " unreviewed",
+      delRows,
+      delPendingLabel: (() => {
+        const n = s.delReqs.filter(d => d.status !== "Completed").length;
+        return n === 0 ? "No open requests" : n + " open";
+      })(),
+      delConfirmOpen: !!delTargetReq,
+      delTarget: delTargetReq ? { name: cust(delTargetReq.cid).name } : { name: "" },
+      cancelDelReq: () => this.setState({ delConfirmId: null }),
+      doDelReq: () => {
+        if (!delTargetReq) return;
+        this.setState(st => ({
+          delReqs: st.delReqs.map(d => d.id === delTargetReq.id ? { ...d, status: "Completed", completedOn: "3 Sep 2026" } : d),
+          delConfirmId: null
+        }));
+        this.flash(cust(delTargetReq.cid).name + "'s deletion request marked processed · logged");
+      }
+    };
+  }
+
+  notifVals() {
+    const s = this.state;
+    const look = {
+      signup: ["ph ph-user-plus", "#EAF3EE", "#2E7D5B"],
+      upgrade: ["ph ph-arrow-circle-up", "#FAF3E0", "#C9A84C"],
+      cancel: ["ph ph-x-circle", "#F8ECEA", "#C94A3B"],
+      support: ["ph ph-lifebuoy", "#FDF1E3", "#C07E1E"],
+      admin: ["ph ph-shield-check", "#EDEFF6", "#141C41"],
+      offer: ["ph ph-megaphone", "#EDEFF6", "#141C41"]
+    };
+    const unreadCount = s.notifs.filter(n => n.unread).length;
+    const shown = s.notifFilter === "unread" ? s.notifs.filter(n => n.unread) : s.notifs;
+    const read = (id) => this.setState(st => ({ notifs: st.notifs.map(n => n.id === id ? { ...n, unread: false } : n) }));
+    const decorate = (n) => {
+      const l = look[n.type] || look.admin;
+      return {
+        ...n,
+        icon: l[0], iconBg: l[1], iconFg: l[2],
+        bg: n.unread ? "#F7F8FC" : "#FFFFFF",
+        fw: n.unread ? 500 : 400,
+        dot: n.unread ? 1 : 0,
+        open: () => {
+          read(n.id);
+          if (n.cid) this.setState({ drawerId: n.cid });
+          else if (n.to) this.setState({ screen: n.to });
+        }
+      };
+    };
+    const groups = [["today", "Today"], ["yesterday", "Yesterday"], ["earlier", "Earlier"]]
+      .map(([k, label]) => {
+        const items = shown.filter(n => n.group === k).map(decorate);
+        return { label, items, count: items.length + (items.length === 1 ? " event" : " events") };
+      })
+      .filter(g => g.items.length > 0);
+    const nfBg = {}, nfFg = {}, nfFw = {};
+    ["all", "unread"].forEach(k => {
+      const on = s.notifFilter === k;
+      nfBg[k] = on ? "#141C41" : "transparent";
+      nfFg[k] = on ? "#FFFFFF" : "#6B7192";
+      nfFw[k] = on ? 500 : 400;
+    });
+    return {
+      notifGroups: groups,
+      notifEmpty: groups.length === 0,
+      unreadLabel: unreadCount === 0 ? "All read" : unreadCount + " unread",
+      nfBg, nfFg, nfFw,
+      setNotifAll: () => this.setState({ notifFilter: "all" }),
+      setNotifUnread: () => this.setState({ notifFilter: "unread" }),
+      markAllRead: () => {
+        if (unreadCount === 0) { this.flash("Nothing unread"); return; }
+        this.setState(st => ({ notifs: st.notifs.map(n => ({ ...n, unread: false })), bellRead: true }));
+        this.flash(unreadCount + (unreadCount === 1 ? " notification" : " notifications") + " marked as read");
+      }
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const screen = s.screen || (this.props.startScreen || "overview");
+    const titles = {
+      overview: ["Overview", "Monday, 3 September 2026 · cohort of 104 users"],
+      customers: ["Customers", "Account and subscription metadata only"],
+      offers: ["Offers & announcements", "Compose, schedule and review what users see"],
+      admins: ["Admins", "Who has access, and what they've done"],
+      settings: ["Settings", "Console, plans and data policy"],
+      support: ["Pending support", "3 open items · oldest raised 2 days ago"],
+      notifications: ["Notifications", "Account, subscription, support and admin events"],
+      kyc: ["KYC exceptions", "Cases the Digilocker check couldn't clear · no documents stored"],
+      risk: ["Risk & security", "Flagged logins and data deletion requests"]
+    };
+    const keys = ["overview", "customers", "kyc", "risk", "offers", "admins", "settings"];
+    const navBg = {}, navFg = {}, navFw = {}, navIcon = {};
+    keys.forEach(k => {
+      const on = screen === k;
+      const hov = !on && s.hoverNav === k;
+      navBg[k] = on ? "rgba(255,255,255,0.10)" : hov ? "rgba(255,255,255,0.045)" : "transparent";
+      navFg[k] = on ? "#FFFFFF" : hov ? "rgba(255,255,255,0.86)" : "rgba(255,255,255,0.66)";
+      navFw[k] = on ? 500 : 400;
+      navIcon[k] = (on || hov) ? "ph-fill" : "ph";
+    });
+
+    const chip = (on) => on ? "#141C41" : "transparent";
+    const chipFg = (on) => on ? "#FFFFFF" : "#6B7192";
+    const planBg = {}, planFg = {}, planFw = {};
+    ["All", "Free", "Plus"].forEach(p => {
+      const on = s.plan === p;
+      planBg[p] = chip(on); planFg[p] = chipFg(on); planFw[p] = on ? 500 : 400;
+    });
+
+    const list = this.filtered();
+    const statusFg = (st) => st === "Active" ? "#2E7D5B" : st === "Suspended" ? "#C94A3B" : st === "Deactivated" ? "#6B7192" : "#9AA0B8";
+    const decorate = (c) => ({
+      ...c,
+      initials: this.initials(c.name),
+      planBg: c.plan === "Plus" ? "#FAF3E0" : "#EDEFF6",
+      planFg: c.plan === "Plus" ? "#8A6F1F" : "#4A5273",
+      statusFg: statusFg(c.status),
+      platIcon: c.platform === "iOS" ? "ph ph-apple-logo" : "ph ph-android-logo",
+      planLabel: c.plan === "Plus" ? "Dhan Plus — monthly" : "Free plan",
+      planNote: c.plan === "Plus" ? "₹199/mo · renews 28 Sep 2026" : c.cancelledOn ? "Plus cancelled on " + c.cancelledOn : "No subscription on record",
+      plusAction: c.plan === "Plus" ? "Revoke Plus" : "Grant Plus manually",
+      history: c.plan === "Plus"
+        ? [{ date: "28 Aug", text: "Renewed Plus — ₹199, UPI" }, { date: "28 Jul", text: "Renewed Plus — ₹199, UPI" }, { date: "28 Jun", text: "Upgraded to Plus from Free" }, { date: c.signup.slice(0, 6), text: "Account created" }]
+        : c.cancelledOn
+          ? [{ date: c.cancelledOn.slice(0, 5), text: "Cancelled Plus — reason: \"not using it\"" }, { date: "28 Jun", text: "Upgraded to Plus from Free" }, { date: c.signup.slice(0, 6), text: "Account created" }]
+          : [{ date: "12 Aug", text: "Started Plus trial — expired after 14 days" }, { date: c.signup.slice(0, 6), text: "Account created" }]
+    });
+
+    const rows = list.map(c => {
+      const on = s.sel.includes(c.id);
+      return Object.assign(decorate(c), {
+        cbBg: on ? "#141C41" : "#FFFFFF",
+        cbMark: on ? 1 : 0,
+        open: () => this.setState({ drawerId: c.id }),
+        toggle: (e) => {
+          e.stopPropagation();
+          this.setState(st => ({ sel: st.sel.includes(c.id) ? st.sel.filter(x => x !== c.id) : st.sel.concat(c.id) }));
+        }
+      });
+    });
+
+    const allOn = rows.length > 0 && s.sel.length === rows.length;
+    const cust = decorate(s.customers.find(c => c.id === s.drawerId) || s.customers[0]);
+
+    const aud = {};
+    const audLabel = { all: "all 104 users", free: "81 free users", plus: "23 Plus users", custom: "34 users in this segment" };
+    const audBg = {}, audFg = {}, audIcon = {};
+    ["all", "free", "plus", "custom"].forEach(k => {
+      const on = s.aud === k;
+      audBg[k] = on ? "#141C41" : "#FFFFFF";
+      audFg[k] = on ? "#FFFFFF" : "#141C41";
+      audIcon[k] = on ? "ph-fill" : "ph";
+    });
+    const styBg = {}, styFg = {};
+    ["banner", "modal"].forEach(k => {
+      const on = s.annStyle === k;
+      styBg[k] = on ? "#141C41" : "#FFFFFF";
+      styFg[k] = on ? "#FFFFFF" : "#141C41";
+    });
+    const tabBg = {}, tabFg = {}, tabFw = {};
+    ["offer", "ann"].forEach(k => {
+      const on = s.tab === k;
+      tabBg[k] = chip(on); tabFg[k] = chipFg(on); tabFw[k] = on ? 500 : 400;
+    });
+    const roleBorder = {}, roleCardBg = {}, roleIcon = {};
+    ["super", "support"].forEach(k => {
+      const on = s.role === k;
+      roleBorder[k] = on ? "#141C41" : "#E1E3EC";
+      roleCardBg[k] = on ? "#F9FAFC" : "#FFFFFF";
+      roleIcon[k] = on ? "ph-fill" : "ph";
+    });
+
+    const admins = s.adminList.map(a => ({
+      ...a,
+      initials: this.initials(a.name),
+      roleBg: a.role === "Super admin" ? "#FAF3E0" : "#EDEFF6",
+      roleFg: a.role === "Super admin" ? "#8A6F1F" : "#4A5273",
+      last: a.active ? a.last : "Deactivated",
+      action: a.active ? "Deactivate" : "Restore",
+      actionFg: a.active ? "#C94A3B" : "#141C41",
+      toggle: () => {
+        this.setState(st => ({ adminList: st.adminList.map(x => x.id === a.id ? { ...x, active: !x.active } : x) }));
+        this.flash(a.active ? a.name + "'s access removed" : a.name + "'s access restored");
+      }
+    }));
+
+    return {
+      pageTitle: titles[screen][0], pageSub: titles[screen][1],
+      meName: this.props.adminName || "Priya Desai",
+      meInitials: this.initials(this.props.adminName || "Priya Desai"),
+      isOverview: screen === "overview", isCustomers: screen === "customers",
+      isOffers: screen === "offers", isAdmins: screen === "admins", isSettings: screen === "settings",
+      navBg, navFg, navFw, navIcon,
+      goOverview: this.go("overview"), goCustomers: this.go("customers"),
+      goOffers: this.go("offers"), goAdmins: this.go("admins"), goSettings: this.go("settings"),
+      q: s.q, onSearch: (e) => this.setState({ q: e.target.value, screen: "customers" }),
+      status: s.status, onStatus: (e) => this.setState({ status: e.target.value }),
+      range: s.range, onRange: (e) => this.setState({ range: e.target.value }),
+      planBg, planFg, planFw,
+      setPlanAll: () => this.setState({ plan: "All" }),
+      setPlanFree: () => this.setState({ plan: "Free" }),
+      setPlanPlus: () => this.setState({ plan: "Plus" }),
+      rows,
+      hasRows: rows.length > 0, rowsEmpty: rows.length === 0,
+      hasQuery: s.q.trim().length > 0,
+      queryLabel: "“" + s.q.trim() + "”",
+      emptyTitle: s.q.trim() ? "No customers match “" + s.q.trim() + "”" : "No customers match these filters",
+      emptyBody: s.q.trim()
+        ? "Search looks at name, email and phone number, and stays inside the filters you've set."
+        : "Try widening the plan, status, time or platform filter.",
+      clearSearch: () => this.setState({ q: "" }),
+      resetSearch: () => this.setState({ q: "", plan: "All", status: "Any status", range: "All time", platform: "All platforms", activity: "Any activity", view: "all", sel: [] }),
+      countLabel: "Showing " + rows.length + " of " + s.customers.length + " customers",
+      allBg: allOn ? "#141C41" : "#FFFFFF", allMark: allOn ? 1 : 0,
+      toggleAll: () => this.setState(st => ({ sel: allOn ? [] : this.filtered().map(c => c.id) })),
+      hasSelection: s.sel.length > 0,
+      selLabel: s.sel.length + (s.sel.length === 1 ? " customer selected" : " customers selected"),
+      clearSel: () => this.setState({ sel: [] }),
+      bulkOffer: () => { this.setState({ screen: "offers", tab: "offer", aud: "custom" }); this.flash("Offer composer opened for " + s.sel.length + " selected customers"); },
+      toast_export: () => this.flash("Exporting " + rows.length + " rows as CSV"),
+
+      drawerOpen: s.drawerId !== null, cust,
+      closeDrawer: () => this.setState({ drawerId: null }),
+      togglePlus: () => {
+        const next = cust.plan === "Plus" ? "Free" : "Plus";
+        this.setState(st => ({ customers: st.customers.map(c => c.id === cust.id ? { ...c, plan: next } : c) }));
+        this.flash(next === "Plus" ? "Plus granted to " + cust.name : "Plus revoked for " + cust.name);
+      },
+      sendIndividual: () => { this.setState({ drawerId: null, screen: "offers", tab: "offer", aud: "custom" }); this.flash("Composing a message to " + cust.name); },
+      askDelete: () => this.setState({ confirmOpen: true, confirmText: "" }),
+      confirmOpen: s.confirmOpen, confirmText: s.confirmText,
+      onConfirmText: (e) => this.setState({ confirmText: e.target.value }),
+      cancelDelete: () => this.setState({ confirmOpen: false }),
+      deleteBtnBg: s.confirmText.trim().toUpperCase() === "DEACTIVATE" ? "#C94A3B" : "#E3BFB9",
+      doDelete: () => {
+        if (s.confirmText.trim().toUpperCase() !== "DEACTIVATE") return;
+        this.setState(st => ({
+          customers: st.customers.map(c => c.id === cust.id ? { ...c, status: "Deactivated", lastActive: "Deactivated today" } : c),
+          confirmOpen: false, drawerId: null, sel: []
+        }));
+        this.flash(cust.name + "'s account deactivated · logged");
+      },
+
+      tabBg, tabFg, tabFw,
+      setTabOffer: () => this.setState({ tab: "offer" }),
+      setTabAnn: () => this.setState({ tab: "ann" }),
+      isAnnTab: s.tab === "ann",
+      composerTitle: s.tab === "ann" ? "New in-app announcement" : "New offer message",
+      headlineLabel: s.tab === "ann" ? "Banner headline" : "Offer headline",
+      startLabel: s.tab === "ann" ? "Starts" : "Send on",
+      sendLabel: s.tab === "ann" ? "Publish announcement" : "Send now",
+      previewMode: s.tab === "ann" ? (s.annStyle === "modal" ? "Modal · iOS" : "Banner · iOS") : "Offer card · iOS",
+      previewEyebrow: s.tab === "ann" ? "Announcement" : "Offer for you",
+      previewTitle: s.offerTitle || "Your headline shows here",
+      previewBody: s.offerBody || "Your message shows here.",
+      audBg, audFg, audIcon,
+      setAudAll: () => this.setState({ aud: "all" }), setAudFree: () => this.setState({ aud: "free" }),
+      setAudPlus: () => this.setState({ aud: "plus" }), setAudCustom: () => this.setState({ aud: "custom" }),
+      isCustomAud: s.aud === "custom",
+      styBg, styFg,
+      setStyleBanner: () => this.setState({ annStyle: "banner" }),
+      setStyleModal: () => this.setState({ annStyle: "modal" }),
+      offerTitle: s.offerTitle, onOfferTitle: (e) => this.setState({ offerTitle: e.target.value }),
+      offerBody: s.offerBody, onOfferBody: (e) => this.setState({ offerBody: e.target.value }),
+      charLabel: s.offerBody.length + " / 180 characters",
+      reachLabel: audLabel[s.aud],
+      sendOffer: () => this.flash(s.tab === "ann" ? "Announcement published to " + audLabel[s.aud] : "Offer sent to " + audLabel[s.aud]),
+      scheduleOffer: () => this.flash("Scheduled for 4 Sep, 10:00 IST"),
+
+      admins, adminCount: s.adminList.filter(a => a.active).length + " active · " + s.adminList.length + " total",
+      inviteEmail: s.inviteEmail, onInviteEmail: (e) => this.setState({ inviteEmail: e.target.value }),
+      roleBorder, roleCardBg, roleIcon,
+      setRoleSuper: () => this.setState({ role: "super" }),
+      setRoleSupport: () => this.setState({ role: "support" }),
+      sendInvite: () => {
+        if (!s.inviteEmail.trim()) { this.flash("Add a work email first"); return; }
+        this.flash("Invite sent to " + s.inviteEmail.trim());
+        this.setState({ inviteEmail: "" });
+      },
+
+      platform: s.platform, onPlatform: (e) => this.setState({ platform: e.target.value }),
+      sort: s.sort, onSort: (e) => this.setState({ sort: e.target.value }),
+
+
+      cardTotal: this.jump({}),
+      cardPlus: this.jump({ plan: "Plus" }),
+      cardNew: this.jump({ sort: "Newest signup first" }),
+      cardChurn: this.jump({ status: "Recently cancelled Plus" }),
+      cardDeactivated: this.jump({ status: "Deactivated" }),
+      deactivatedCount: s.customers.filter(c => c.status === "Deactivated").length,
+      deactivatedNote: (() => {
+        const n = s.customers.filter(c => c.status === "Deactivated" && this.daysSince(c) <= 30).length;
+        return n === 1 ? "1 this month" : n + " this month";
+      })(),
+      cardSupport: this.go("support"),
+      isSupport: screen === "support",
+      issues: s.issues.map(i => {
+        const c = s.customers.find(x => x.id === i.cid) || s.customers[0];
+        return Object.assign({}, i, {
+          customer: c.name, email: c.email, initials: this.initials(c.name),
+          statusBg: i.status === "Open" ? "#F8ECEA" : "#FAF3E0",
+          statusFg: i.status === "Open" ? "#A93B2E" : "#8A6F1F",
+          open: () => this.setState({ drawerId: c.id })
+        });
+      }),
+
+      prefs: [
+        { key: "signup", label: "New signups", desc: "When someone creates a Dhan account on iOS or Android.", icon: "ph ph-user-plus", iconBg: "#EAF3EE", iconFg: "#2E7D5B" },
+        { key: "plan", label: "Plan upgrades and cancellations", desc: "Every move between Free and Plus, with the reason given.", icon: "ph ph-arrow-circle-up", iconBg: "#FAF3E0", iconFg: "#C9A84C" },
+        { key: "support", label: "Support tickets raised", desc: "New items from help@dhan.app or the in-app help sheet.", icon: "ph ph-lifebuoy", iconBg: "#FDF1E3", iconFg: "#C07E1E" },
+        { key: "admin", label: "Other admins' actions", desc: "Manual Plus grants, account deactivations and access changes.", icon: "ph ph-shield-check", iconBg: "#EDEFF6", iconFg: "#141C41" }
+      ].map((p, i, arr) => {
+        const on = !!s.prefs[p.key];
+        return Object.assign({}, p, {
+          trackBg: on ? "#141C41" : "#D8DBE7",
+          knobX: on ? "18px" : "0px",
+          rule: i === arr.length - 1 ? "transparent" : "#EEF0F5",
+          toggle: () => {
+            this.setState(st => ({ prefs: Object.assign({}, st.prefs, { [p.key]: !st.prefs[p.key] }) }));
+            this.flash(on ? p.label + " notifications off" : p.label + " notifications on");
+          }
+        });
+      }),
+      prefSummary: (() => {
+        const n = Object.values(s.prefs).filter(Boolean).length;
+        return n === 4 ? "All 4 event types on" : n === 0 ? "All notifications off" : n + " of 4 event types on";
+      })(),
+
+      isNotifs: screen === "notifications",
+      goNotifs: () => this.setState({ screen: "notifications", bellOpen: false, profileOpen: false }),
+      ...this.notifVals(),
+      ...this.riskVals(),
+      ...this.menuVals(),
+      goKyc: this.go("kyc"), goRisk: this.go("risk"),
+      hoverKyc: () => this.setState({ hoverNav: "kyc" }),
+      hoverRisk: () => this.setState({ hoverNav: "risk" }),
+
+      hoverOverview: () => this.setState({ hoverNav: "overview" }),
+      hoverCustomers: () => this.setState({ hoverNav: "customers" }),
+      hoverOffers: () => this.setState({ hoverNav: "offers" }),
+      hoverAdmins: () => this.setState({ hoverNav: "admins" }),
+      hoverSettings: () => this.setState({ hoverNav: "settings" }),
+      hoverNone: () => this.setState({ hoverNav: "" }),
+
+      bellOpen: s.bellOpen, profileOpen: s.profileOpen,
+      bellDot: (s.bellRead || s.notifs.every(n => !n.unread)) ? 0 : 1,
+      toggleBell: () => this.setState(st => ({ bellOpen: !st.bellOpen, profileOpen: false, bellRead: true })),
+      toggleProfile: () => this.setState(st => ({ profileOpen: !st.profileOpen, bellOpen: false })),
+      closeMenus: () => this.setState({ bellOpen: false, profileOpen: false }),
+      menuAccount: () => { this.setState({ profileOpen: false, screen: "settings" }); },
+      menuSwitch: () => { this.setState({ profileOpen: false }); this.flash("Switch admin — pick an account to continue"); },
+      menuLogout: () => { this.setState({ profileOpen: false }); this.flash("Signed out of the admin console"); },
+
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
