@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/*
+ * Dhan Admin Console design tokens.
+ * Every color, radius, and font used in components should reference
+ * one of these theme variables (e.g. bg-primary, rounded-md) instead
+ * of a hardcoded hex value or pixel size.
+ */
+@theme {
+  --color-primary: #141c41; /* Deep Navy */
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #c9a84c; /* Mellow Gold */
+  --color-secondary-foreground: #141c41;
+
+  --color-background: #f4f5f9; /* page background */
+  --color-surface: #ffffff; /* cards, top bar, inputs */
+  --color-border: #e3e5ee;
+  --color-muted: #8b8fa3; /* secondary text/icons */
+  --color-muted-foreground: #5b5f77;
+
+  --font-sans: var(--font-poppins), "Segoe UI", sans-serif;
+
+  /* Corner radii: 4 / 8 / 12 / pill, nothing in between. */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+}
+
+/*
+ * Flat style: this app never uses box-shadow. Depth comes from
+ * borders and background color changes only. Don't add shadow-*
+ * utilities to components.
+ *
+ * Spacing: base unit is 8px. Tailwind's default scale is 4px per
+ * step, so always use even step numbers (p-2 = 8px, p-4 = 16px,
+ * gap-6 = 24px, ...) rather than odd ones (p-1, p-3), to stay on
+ * the 8px grid.
+ */
