@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { LockSimple } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import { navItems } from "./nav-items";
 
@@ -8,10 +9,14 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-full w-[260px] shrink-0 flex-col overflow-y-auto bg-primary">
-      <div className="px-6 py-6">
-        <span className="text-lg font-semibold tracking-wide text-primary-foreground">
-          Dhan Admin
+    <aside className="flex h-full w-[236px] shrink-0 flex-col overflow-y-auto bg-primary">
+      <div className="flex flex-col items-start gap-2 px-6 py-6">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-surface">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/dhan-logomark.svg" alt="Dhan" className="h-[26px] w-auto" />
+        </div>
+        <span className="text-xs uppercase tracking-[0.06em] text-primary-foreground/50">
+          Admin console
         </span>
       </div>
 
@@ -54,6 +59,16 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      <div className="mx-4 mb-5 mt-auto flex flex-col gap-2 rounded-md bg-primary-foreground/5 px-3 py-3.5">
+        <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.06em] text-secondary">
+          <LockSimple size={13} />
+          Local-first
+        </div>
+        <p className="text-sm leading-relaxed text-primary-foreground/60">
+          Account metadata only. Transactions and budgets stay on the user&apos;s device.
+        </p>
+      </div>
     </aside>
   );
 }

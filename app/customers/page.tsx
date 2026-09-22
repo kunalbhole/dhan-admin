@@ -246,15 +246,11 @@ export default function CustomersPage() {
   const [page, setPage] = useState(1);
   const filterRowRef = useRef<HTMLDivElement>(null);
 
-  // TEMP DEBUG: closes any open filter dropdown when clicking outside the
-  // filter row. Logs so open/close behavior can be verified in devtools.
-  // Remove this effect (and the console.log calls below) once confirmed.
   useEffect(() => {
     if (!openDropdown) return;
     function handlePointerDown(event: MouseEvent) {
       if (!filterRowRef.current) return;
       if (event.target instanceof Node && !filterRowRef.current.contains(event.target)) {
-        console.log("[CustomersFilters] outside click -> closing dropdown:", openDropdown);
         setOpenDropdown(null);
       }
     }
@@ -311,12 +307,7 @@ export default function CustomersPage() {
   }, [statusFilter]);
 
   function toggleDropdown(key: DropdownKey) {
-    setOpenDropdown((current) => {
-      const next = current === key ? null : key;
-      // TEMP DEBUG: remove once dropdown open/close is confirmed in devtools.
-      console.log("[CustomersFilters] toggleDropdown:", key, "->", next ? `open (${next})` : "closed");
-      return next;
-    });
+    setOpenDropdown((current) => (current === key ? null : key));
   }
 
   function toggleRow(id: number) {
@@ -385,8 +376,6 @@ export default function CustomersPage() {
             value={statusFilter}
             options={STATUS_OPTIONS.map((value) => ({ value }))}
             onChange={(value) => {
-              // TEMP DEBUG: remove once filter selection is confirmed in devtools.
-              console.log("[CustomersFilters] status filter ->", value);
               setStatusFilter(value as StatusFilter);
               setPage(1);
               setOpenDropdown(null);
@@ -399,7 +388,6 @@ export default function CustomersPage() {
             value={signupFilter}
             options={SIGNUP_OPTIONS.map((value) => ({ value }))}
             onChange={(value) => {
-              console.log("[CustomersFilters] signed-up filter ->", value);
               setSignupFilter(value as SignupFilter);
               setPage(1);
               setOpenDropdown(null);
@@ -412,7 +400,6 @@ export default function CustomersPage() {
             value={lastActiveFilter}
             options={LAST_ACTIVE_OPTIONS.map((value) => ({ value }))}
             onChange={(value) => {
-              console.log("[CustomersFilters] last-active filter ->", value);
               setLastActiveFilter(value as LastActiveFilter);
               setPage(1);
               setOpenDropdown(null);
@@ -425,7 +412,6 @@ export default function CustomersPage() {
             value={platformFilter}
             options={PLATFORM_OPTIONS.map((value) => ({ value }))}
             onChange={(value) => {
-              console.log("[CustomersFilters] platform filter ->", value);
               setPlatformFilter(value as PlatformFilter);
               setPage(1);
               setOpenDropdown(null);
@@ -439,7 +425,6 @@ export default function CustomersPage() {
             value={sortFilter}
             options={SORT_OPTIONS}
             onChange={(value) => {
-              console.log("[CustomersFilters] sort ->", value);
               setSortFilter(value);
               setOpenDropdown(null);
             }}
@@ -543,7 +528,7 @@ export default function CustomersPage() {
 
         <div className="flex items-center justify-between border-t border-border px-5 py-4 text-sm text-muted-foreground">
           <span>
-            Showing {pageRows.length} of {filteredCustomers.length}
+            Showing {pageRows.length} of {filteredCustomers.length} customers
           </span>
           <div className="flex gap-1.5">
             <button

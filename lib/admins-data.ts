@@ -14,6 +14,8 @@ export type Admin = {
 };
 
 export const admins: Admin[] = [
+  // Note: admins[0] is treated as the signed-in admin (see `currentAdmin`
+  // below) — keep them first if the roster order ever changes.
   {
     id: 1,
     name: "Priya Desai",
@@ -47,6 +49,9 @@ export const admins: Admin[] = [
     active: false,
   },
 ];
+
+// The signed-in admin shown across the console (topbar, settings copy, etc).
+export const currentAdmin: Admin = admins[0];
 
 export type ActivityType = "deactivation" | "plus-grant" | "offer" | "admin-access";
 
