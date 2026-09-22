@@ -16,8 +16,14 @@ function formatOverviewDate(date: Date) {
 
 export function Topbar() {
   const pathname = usePathname();
-  const title = navItems.find((item) => item.href === pathname)?.label ?? "Dhan Admin";
   const isOverview = pathname === "/";
+  const isCustomers = pathname === "/customers";
+  const isRiskSecurity = pathname === "/risk-security";
+  const isOffers = pathname === "/offers";
+  const isAdmins = pathname === "/admins";
+  const title = isOffers
+    ? "Offers & announcements"
+    : (navItems.find((item) => item.href === pathname)?.label ?? "Dhan Admin");
 
   return (
     <header className="flex min-h-[72px] shrink-0 items-center justify-between border-b border-border bg-surface px-6 py-3">
@@ -27,6 +33,22 @@ export function Topbar() {
           <p className="text-sm text-muted-foreground">
             {formatOverviewDate(new Date())} · cohort of {TOTAL_USERS} users
           </p>
+        )}
+        {isCustomers && (
+          <p className="text-sm text-muted-foreground">Account and subscription metadata only</p>
+        )}
+        {isRiskSecurity && (
+          <p className="text-sm text-muted-foreground">
+            Suspicious activity and data deletion requests
+          </p>
+        )}
+        {isOffers && (
+          <p className="text-sm text-muted-foreground">
+            Compose, schedule and review what users see
+          </p>
+        )}
+        {isAdmins && (
+          <p className="text-sm text-muted-foreground">Who has access, and what they&apos;ve done</p>
         )}
       </div>
 
