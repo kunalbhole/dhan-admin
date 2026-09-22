@@ -18,6 +18,16 @@
   --color-muted: #8b8fa3; /* secondary text/icons */
   --color-muted-foreground: #5b5f77;
 
+  /* Semantic status colors, each paired with a light "surface" tint
+   * for icon chips (e.g. bg-success-surface + text-success). */
+  --color-success: #2e7d5b;
+  --color-success-surface: #eaf3ee;
+  --color-danger: #c94a3b;
+  --color-danger-surface: #f8ecea;
+  --color-warning: #d89838;
+  --color-secondary-surface: #faf3e0; /* gold tint, e.g. upgrade activity */
+  --color-primary-surface: #edeff6; /* navy tint, e.g. admin activity */
+
   --font-sans: var(--font-poppins), "Segoe UI", sans-serif;
 
   /* Corner radii: 4 / 8 / 12 / pill, nothing in between. */

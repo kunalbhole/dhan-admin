@@ -8,7 +8,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-[260px] shrink-0 flex-col bg-primary">
+    <aside className="flex h-full w-[260px] shrink-0 flex-col overflow-y-auto bg-primary">
       <div className="px-6 py-6">
         <span className="text-lg font-semibold tracking-wide text-primary-foreground">
           Dhan Admin

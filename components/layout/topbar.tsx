@@ -3,14 +3,32 @@
 import { Bell, MagnifyingGlass } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import { navItems } from "./nav-items";
+import { TOTAL_USERS } from "@/lib/overview-data";
+
+function formatOverviewDate(date: Date) {
+  return new Intl.DateTimeFormat("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+}
 
 export function Topbar() {
   const pathname = usePathname();
   const title = navItems.find((item) => item.href === pathname)?.label ?? "Dhan Admin";
+  const isOverview = pathname === "/";
 
   return (
-    <header className="flex h-[72px] shrink-0 items-center justify-between border-b border-border bg-surface px-6">
-      <h1 className="text-xl font-semibold text-primary">{title}</h1>
+    <header className="flex min-h-[72px] shrink-0 items-center justify-between border-b border-border bg-surface px-6 py-3">
+      <div className="flex flex-col gap-0.5">
+        <h1 className="text-xl font-semibold text-primary">{title}</h1>
+        {isOverview && (
+          <p className="text-sm text-muted-foreground">
+            {formatOverviewDate(new Date())} · cohort of {TOTAL_USERS} users
+          </p>
+        )}
+      </div>
 
       <div className="flex items-center gap-4">
         <label className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2">
